@@ -15,10 +15,10 @@ struct ProfileSetupView: View {
                     .font(.system(size: 64))
                     .foregroundStyle(Theme.primary)
 
-                Text("What's your name?")
+                Text("¿Cómo te llamas?")
                     .font(.system(size: 24, weight: .bold))
 
-                Text("This is how others will see you")
+                Text("Así es como otros te verán")
                     .font(.system(size: 15))
                     .foregroundStyle(.secondary)
             }
@@ -27,11 +27,11 @@ struct ProfileSetupView: View {
 
             // Name input
             VStack(alignment: .leading, spacing: 8) {
-                Text("Your name")
+                Text("Tu nombre")
                     .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(.secondary)
 
-                TextField("John Doe", text: $name)
+                TextField("Juan Pérez", text: $name)
                     .font(.system(size: 20))
                     .textContentType(.name)
                     .focused($isNameFocused)
@@ -44,7 +44,7 @@ struct ProfileSetupView: View {
 
             // Continue button
             Button(action: onContinue) {
-                Text("Continue")
+                Text("Continuar")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)

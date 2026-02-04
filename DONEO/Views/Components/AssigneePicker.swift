@@ -18,7 +18,7 @@ struct AssigneePicker: View {
                             Image(systemName: "person.slash")
                                 .foregroundColor(.secondary)
                                 .frame(width: 32)
-                            Text("Unassigned")
+                            Text("Sin asignar")
                             Spacer()
                             if selectedUser == nil {
                                 Image(systemName: "checkmark")
@@ -55,11 +55,11 @@ struct AssigneePicker: View {
                     }
                 }
             }
-            .navigationTitle("Assign To")
+            .navigationTitle("Asignar a")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                 }
@@ -94,7 +94,7 @@ struct AssigneeLabel: View {
                 Image(systemName: "person")
                     .font(.system(size: 11))
                     .foregroundStyle(.tertiary)
-                Text("Unassigned")
+                Text("Sin asignar")
                     .font(.system(size: 13))
                     .foregroundStyle(.tertiary)
             }

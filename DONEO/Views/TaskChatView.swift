@@ -17,7 +17,7 @@ struct TaskChatView: View {
             HStack {
                 Image(systemName: "bubble.left.and.bubble.right.fill")
                     .font(.system(size: 12))
-                Text("Discussion")
+                Text("Discusion")
                     .font(.system(size: 13, weight: .semibold))
                 Spacer()
                 Text("\(viewModel.messages.count)")
@@ -38,10 +38,10 @@ struct TaskChatView: View {
                                 Image(systemName: "bubble.left.and.bubble.right")
                                     .font(.system(size: 32))
                                     .foregroundStyle(.tertiary)
-                                Text("No messages yet")
+                                Text("No hay mensajes aun")
                                     .font(.system(size: 14))
                                     .foregroundStyle(.tertiary)
-                                Text("Start the conversation about this task")
+                                Text("Inicia la conversacion sobre esta tarea")
                                     .font(.system(size: 12))
                                     .foregroundStyle(.quaternary)
                             }
@@ -79,7 +79,7 @@ struct TaskChatView: View {
                         .frame(width: 3)
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Referencing subtask")
+                        Text("Referenciando subtarea")
                             .font(.system(size: 11))
                             .foregroundStyle(.secondary)
                         Text(subtaskRef.subtaskTitle)
@@ -126,7 +126,7 @@ struct TaskChatView: View {
                 }
 
                 // Text field - sends on return, no send button
-                TextField("Message", text: $viewModel.newMessageText, axis: .vertical)
+                TextField("Mensaje", text: $viewModel.newMessageText, axis: .vertical)
                     .textFieldStyle(.plain)
                     .lineLimit(1...4)
                     .padding(.horizontal, 12)
@@ -221,7 +221,7 @@ struct TelegramStyleAttachmentSheet: View {
 
                 Spacer()
 
-                Text("Recents")
+                Text("Recientes")
                     .font(.system(size: 16, weight: .semibold))
 
                 Spacer()
@@ -255,16 +255,16 @@ struct TelegramStyleAttachmentSheet: View {
 
             // Bottom tab bar
             HStack(spacing: 0) {
-                TabButton(icon: "photo.fill", title: "Gallery", isSelected: selectedTab == 0) {
+                TabButton(icon: "photo.fill", title: "Galeria", isSelected: selectedTab == 0) {
                     selectedTab = 0
                 }
-                TabButton(icon: "doc.fill", title: "File", isSelected: selectedTab == 1) {
+                TabButton(icon: "doc.fill", title: "Archivo", isSelected: selectedTab == 1) {
                     selectedTab = 1
                 }
-                TabButton(icon: "checklist", title: "Checklist", isSelected: selectedTab == 2) {
+                TabButton(icon: "checklist", title: "Lista", isSelected: selectedTab == 2) {
                     selectedTab = 2
                 }
-                TabButton(icon: "person.fill", title: "Contact", isSelected: selectedTab == 3) {
+                TabButton(icon: "person.fill", title: "Contacto", isSelected: selectedTab == 3) {
                     selectedTab = 3
                 }
             }
@@ -294,7 +294,7 @@ struct TelegramStyleAttachmentSheet: View {
                         VStack(spacing: 4) {
                             Image(systemName: "camera.fill")
                                 .font(.system(size: 28))
-                            Text("Camera")
+                            Text("Camara")
                                 .font(.system(size: 12))
                         }
                         .foregroundStyle(.secondary)
@@ -341,9 +341,9 @@ struct TelegramStyleAttachmentSheet: View {
                     Image(systemName: "doc.badge.plus")
                         .font(.system(size: 48))
                         .foregroundStyle(.orange)
-                    Text("Choose File")
+                    Text("Elegir archivo")
                         .font(.system(size: 16, weight: .medium))
-                    Text("PDF, Word, Excel, and more")
+                    Text("PDF, Word, Excel, y mas")
                         .font(.system(size: 13))
                         .foregroundStyle(.secondary)
                 }
@@ -365,7 +365,7 @@ struct TelegramStyleAttachmentSheet: View {
                         .font(.system(size: 24))
                         .foregroundStyle(.secondary)
 
-                    TextField("Add a subtask...", text: $newSubtaskTitle)
+                    TextField("Agregar una subtarea...", text: $newSubtaskTitle)
                         .font(.system(size: 17))
                         .focused($isSubtaskFieldFocused)
                         .submitLabel(.next)
@@ -381,7 +381,7 @@ struct TelegramStyleAttachmentSheet: View {
                         .foregroundStyle(.secondary)
                         .padding(.top, 2)
 
-                    TextField("Add description (optional)...", text: $newSubtaskDescription, axis: .vertical)
+                    TextField("Agregar descripcion (opcional)...", text: $newSubtaskDescription, axis: .vertical)
                         .font(.system(size: 15))
                         .lineLimit(1...4)
                 }
@@ -392,12 +392,12 @@ struct TelegramStyleAttachmentSheet: View {
                 // Quick assign picker (multi-select)
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text("Assign to")
+                        Text("Asignar a")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
                         if !selectedAssigneeIds.isEmpty {
-                            Text("\(selectedAssigneeIds.count) selected")
+                            Text("\(selectedAssigneeIds.count) seleccionados")
                                 .font(.system(size: 11))
                                 .foregroundStyle(Theme.primary)
                         }
@@ -457,7 +457,7 @@ struct TelegramStyleAttachmentSheet: View {
                 } label: {
                     HStack {
                         Image(systemName: "plus.circle.fill")
-                        Text("Add Subtask")
+                        Text("Agregar Subtarea")
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
@@ -477,7 +477,7 @@ struct TelegramStyleAttachmentSheet: View {
                 HStack {
                     Image(systemName: "info.circle")
                         .font(.system(size: 12))
-                    Text("\(viewModel.task.subtasks.count) subtask\(viewModel.task.subtasks.count == 1 ? "" : "s") added · View in task header")
+                    Text("\(viewModel.task.subtasks.count) subtarea\(viewModel.task.subtasks.count == 1 ? "" : "s") agregada\(viewModel.task.subtasks.count == 1 ? "" : "s") · Ver en encabezado de tarea")
                         .font(.system(size: 12))
                 }
                 .foregroundStyle(.tertiary)
@@ -614,7 +614,7 @@ struct MessageBubble: View {
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(.secondary)
 
-                Text(completed ? "completed" : "reopened")
+                Text(completed ? "completo" : "reabrio")
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
 
@@ -716,9 +716,9 @@ struct SubtaskPickerSheet: View {
             List {
                 if subtasks.isEmpty {
                     ContentUnavailableView(
-                        "No Subtasks",
+                        "Sin Subtareas",
                         systemImage: "checklist",
-                        description: Text("Add subtasks to reference them in chat")
+                        description: Text("Agrega subtareas para referenciarlas en el chat")
                     )
                 } else {
                     ForEach(subtasks) { subtask in
@@ -756,11 +756,11 @@ struct SubtaskPickerSheet: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Reference Subtask")
+            .navigationTitle("Referenciar Subtarea")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                 }

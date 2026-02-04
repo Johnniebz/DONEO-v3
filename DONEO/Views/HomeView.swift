@@ -14,8 +14,8 @@ struct HomeView: View {
             .onDelete(perform: deleteProjects)
         }
         .listStyle(.plain)
-        .navigationTitle("Projects")
-        .searchable(text: $viewModel.searchText, prompt: "Search projects")
+        .navigationTitle("Proyectos")
+        .searchable(text: $viewModel.searchText, prompt: "Buscar proyectos")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
@@ -44,9 +44,9 @@ struct HomeView: View {
                 ContentUnavailableView.search(text: viewModel.searchText)
             } else if viewModel.projects.isEmpty {
                 ContentUnavailableView(
-                    "No Projects Yet",
+                    "Sin Proyectos",
                     systemImage: "folder",
-                    description: Text("Tap + to create your first project")
+                    description: Text("Toca + para crear tu primer proyecto")
                 )
             }
         }
@@ -82,17 +82,17 @@ struct SettingsView: View {
             }
 
             Section {
-                Label("Notifications", systemImage: "bell")
-                Label("Privacy", systemImage: "lock")
-                Label("Storage", systemImage: "internaldrive")
+                Label("Notificaciones", systemImage: "bell")
+                Label("Privacidad", systemImage: "lock")
+                Label("Almacenamiento", systemImage: "internaldrive")
             }
 
             Section {
-                Label("Help", systemImage: "questionmark.circle")
-                Label("About", systemImage: "info.circle")
+                Label("Ayuda", systemImage: "questionmark.circle")
+                Label("Acerca de", systemImage: "info.circle")
             }
         }
-        .navigationTitle("Settings")
+        .navigationTitle("Ajustes")
     }
 }
 
@@ -117,20 +117,20 @@ struct Contact: Identifiable {
 
 struct MockContacts {
     static let all: [Contact] = [
-        // On DONEO
-        Contact(name: "Maria Garcia", phoneNumber: "+1 555-0101", isOnDONEO: true),
-        Contact(name: "James Wilson", phoneNumber: "+1 555-0102", isOnDONEO: true),
-        Contact(name: "Sarah Chen", phoneNumber: "+1 555-0103", isOnDONEO: true),
-        Contact(name: "Mike Thompson", phoneNumber: "+1 555-0104", isOnDONEO: true),
-        // Not on DONEO
-        Contact(name: "David Brown", phoneNumber: "+1 555-0201", isOnDONEO: false),
-        Contact(name: "Emma Davis", phoneNumber: "+1 555-0202", isOnDONEO: false),
-        Contact(name: "Carlos Rodriguez", phoneNumber: "+1 555-0203", isOnDONEO: false),
-        Contact(name: "Lisa Wang", phoneNumber: "+1 555-0204", isOnDONEO: false),
-        Contact(name: "John Smith", phoneNumber: "+1 555-0205", isOnDONEO: false),
-        Contact(name: "Anna Martinez", phoneNumber: "+1 555-0206", isOnDONEO: false),
-        Contact(name: "Robert Lee", phoneNumber: "+1 555-0207", isOnDONEO: false),
-        Contact(name: "Jennifer Taylor", phoneNumber: "+1 555-0208", isOnDONEO: false),
+        // En DONEO
+        Contact(name: "María García", phoneNumber: "+34 612-345-678", isOnDONEO: true),
+        Contact(name: "Juan Martínez", phoneNumber: "+34 623-456-789", isOnDONEO: true),
+        Contact(name: "Sara López", phoneNumber: "+34 634-567-890", isOnDONEO: true),
+        Contact(name: "Miguel Rodríguez", phoneNumber: "+34 645-678-901", isOnDONEO: true),
+        // No en DONEO
+        Contact(name: "David Fernández", phoneNumber: "+34 656-789-012", isOnDONEO: false),
+        Contact(name: "Elena Sánchez", phoneNumber: "+34 667-890-123", isOnDONEO: false),
+        Contact(name: "Carlos Pérez", phoneNumber: "+34 678-901-234", isOnDONEO: false),
+        Contact(name: "Laura Torres", phoneNumber: "+34 689-012-345", isOnDONEO: false),
+        Contact(name: "José Ramírez", phoneNumber: "+34 690-123-456", isOnDONEO: false),
+        Contact(name: "Ana Moreno", phoneNumber: "+34 601-234-567", isOnDONEO: false),
+        Contact(name: "Roberto Ruiz", phoneNumber: "+34 612-345-670", isOnDONEO: false),
+        Contact(name: "Patricia Herrera", phoneNumber: "+34 623-456-780", isOnDONEO: false),
     ]
 
     static var onDONEO: [Contact] {
@@ -200,24 +200,24 @@ struct NewProjectFlowView: View {
                     projectDetailsView
                 }
             }
-            .navigationTitle(step == .selectMembers ? "Add Members" : "New Project")
+            .navigationTitle(step == .selectMembers ? "Añadir Miembros" : "Nuevo Proyecto")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     if step == .selectMembers {
-                        Button("Next") {
+                        Button("Siguiente") {
                             withAnimation {
                                 step = .projectDetails
                             }
                         }
                         .fontWeight(.semibold)
                     } else {
-                        Button("Create") {
+                        Button("Crear") {
                             let selectedContactsList = MockContacts.all.filter { selectedContacts.contains($0.id) }
                             let description = projectDescription.trimmingCharacters(in: .whitespaces).isEmpty ? nil : projectDescription
                             onCreate(projectName, description, selectedContactsList, pendingInvites)
@@ -245,9 +245,9 @@ struct NewProjectFlowView: View {
         VStack(spacing: 0) {
             // Search bar
             HStack {
-                Text("To:")
+                Text("Para:")
                     .foregroundStyle(.secondary)
-                TextField("Search name or number", text: $searchText)
+                TextField("Buscar nombre o número", text: $searchText)
             }
             .padding(.horizontal)
             .padding(.vertical, 12)
@@ -280,19 +280,19 @@ struct NewProjectFlowView: View {
                     Button {
                         showingQRCode = true
                     } label: {
-                        Label("Invite via QR Code", systemImage: "qrcode")
+                        Label("Invitar con Código QR", systemImage: "qrcode")
                     }
 
                     Button {
                         shareInviteLink()
                     } label: {
-                        Label("Share Invite Link", systemImage: "link")
+                        Label("Compartir Enlace", systemImage: "link")
                     }
 
                     Button {
                         showingAddByPhone = true
                     } label: {
-                        Label("Add by Phone Number", systemImage: "phone.badge.plus")
+                        Label("Añadir por Teléfono", systemImage: "phone.badge.plus")
                     }
                 }
 
@@ -303,7 +303,7 @@ struct NewProjectFlowView: View {
                             contactRow(contact: contact)
                         }
                     } header: {
-                        Text("On DONEO")
+                        Text("En DONEO")
                     }
                 }
 
@@ -314,7 +314,7 @@ struct NewProjectFlowView: View {
                             contactRow(contact: contact, showInviteBadge: true)
                         }
                     } header: {
-                        Text("Invite to DONEO")
+                        Text("Invitar a DONEO")
                     }
                 }
             }
@@ -348,7 +348,7 @@ struct NewProjectFlowView: View {
                             .foregroundStyle(.primary)
 
                         if showInviteBadge {
-                            Text("Invite")
+                            Text("Invitar")
                                 .font(.system(size: 11))
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 6)
@@ -424,11 +424,11 @@ struct NewProjectFlowView: View {
             // Selected members summary
             if selectedCount > 0 {
                 HStack {
-                    Text("\(selectedCount) member\(selectedCount == 1 ? "" : "s") selected")
+                    Text("\(selectedCount) miembro\(selectedCount == 1 ? "" : "s") seleccionado\(selectedCount == 1 ? "" : "s")")
                         .font(.system(size: 14))
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Button("Edit") {
+                    Button("Editar") {
                         withAnimation {
                             step = .selectMembers
                         }
@@ -440,11 +440,11 @@ struct NewProjectFlowView: View {
 
             // Project name field
             VStack(alignment: .leading, spacing: 8) {
-                Text("Project Name")
+                Text("Nombre del Proyecto")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(.secondary)
 
-                TextField("Enter project name", text: $projectName)
+                TextField("Ingresa el nombre del proyecto", text: $projectName)
                     .font(.system(size: 17))
                     .padding(12)
                     .background(Color(uiColor: .secondarySystemBackground))
@@ -454,11 +454,11 @@ struct NewProjectFlowView: View {
 
             // Project description field
             VStack(alignment: .leading, spacing: 8) {
-                Text("Description (Optional)")
+                Text("Descripción (Opcional)")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(.secondary)
 
-                TextField("What is this project about?", text: $projectDescription, axis: .vertical)
+                TextField("¿De qué trata este proyecto?", text: $projectDescription, axis: .vertical)
                     .font(.system(size: 17))
                     .lineLimit(3...6)
                     .padding(12)
@@ -481,7 +481,7 @@ struct QRInviteView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                Text("Scan to Join Project")
+                Text("Escanea para Unirte")
                     .font(.system(size: 20, weight: .semibold))
 
                 // QR Code placeholder
@@ -494,7 +494,7 @@ struct QRInviteView: View {
                             .foregroundStyle(.secondary)
                     }
 
-                Text("Others can scan this QR code to join the project")
+                Text("Otros pueden escanear este código QR para unirse al proyecto")
                     .font(.system(size: 14))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -506,7 +506,7 @@ struct QRInviteView: View {
                 Button {
                     // Open camera to scan QR
                 } label: {
-                    Label("Scan QR Code", systemImage: "camera")
+                    Label("Escanear Código QR", systemImage: "camera")
                         .font(.system(size: 16, weight: .medium))
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -522,7 +522,7 @@ struct QRInviteView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                    Button("Listo") {
                         dismiss()
                     }
                 }
@@ -545,11 +545,11 @@ struct AddByPhoneView: View {
         NavigationStack {
             VStack(spacing: 20) {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Phone Number")
+                    Text("Número de Teléfono")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.secondary)
 
-                    TextField("+1 555-0000", text: $phoneNumber)
+                    TextField("+34 612-345-678", text: $phoneNumber)
                         .font(.system(size: 17))
                         .keyboardType(.phonePad)
                         .padding(12)
@@ -559,18 +559,18 @@ struct AddByPhoneView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Name (Optional)")
+                    Text("Nombre (Opcional)")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(.secondary)
 
-                    TextField("Contact name", text: $name)
+                    TextField("Nombre del contacto", text: $name)
                         .font(.system(size: 17))
                         .padding(12)
                         .background(Color(uiColor: .secondarySystemBackground))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
 
-                Text("An SMS invite will be sent to this number when the project is created.")
+                Text("Se enviará una invitación por SMS a este número cuando se cree el proyecto.")
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
                     .padding(.top, 8)
@@ -578,16 +578,16 @@ struct AddByPhoneView: View {
                 Spacer()
             }
             .padding()
-            .navigationTitle("Add by Phone")
+            .navigationTitle("Añadir por Teléfono")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
+                    Button("Añadir") {
                         onAdd(phoneNumber, name.isEmpty ? nil : name)
                         dismiss()
                     }

@@ -30,13 +30,13 @@ enum DueDateOption: Equatable {
     var label: String {
         switch self {
         case .none:
-            return "No due date"
+            return "Sin fecha limite"
         case .today:
-            return "Today"
+            return "Hoy"
         case .tomorrow:
-            return "Tomorrow"
+            return "Manana"
         case .thisWeek:
-            return "This Friday"
+            return "Este viernes"
         case .custom(let date):
             return date.formatted(date: .abbreviated, time: .omitted)
         }
@@ -77,7 +77,7 @@ struct DueDatePicker: View {
                             Image(systemName: "calendar")
                                 .foregroundColor(.blue)
                                 .frame(width: 24)
-                            Text("Pick a date...")
+                            Text("Elegir una fecha...")
                             Spacer()
                             if case .custom = DueDateOption.from(date: selectedDate) {
                                 Image(systemName: "checkmark")
@@ -88,11 +88,11 @@ struct DueDatePicker: View {
                     .foregroundColor(.primary)
                 }
             }
-            .navigationTitle("Due Date")
+            .navigationTitle("Fecha limite")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                 }
@@ -146,23 +146,23 @@ struct DueDatePicker: View {
     private var customDatePicker: some View {
         NavigationStack {
             DatePicker(
-                "Select Date",
+                "Seleccionar fecha",
                 selection: $customDate,
                 in: Date()...,
                 displayedComponents: .date
             )
             .datePickerStyle(.graphical)
             .padding()
-            .navigationTitle("Pick a Date")
+            .navigationTitle("Elegir una fecha")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         showDatePicker = false
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                    Button("Listo") {
                         selectedDate = customDate
                         showDatePicker = false
                         dismiss()
@@ -200,11 +200,11 @@ struct DueDateLabel: View {
     private func formattedDate(_ date: Date) -> String {
         let calendar = Calendar.current
         if calendar.isDateInToday(date) {
-            return "Today"
+            return "Hoy"
         } else if calendar.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Manana"
         } else if calendar.isDateInYesterday(date) {
-            return "Yesterday"
+            return "Ayer"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }

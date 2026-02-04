@@ -62,14 +62,14 @@ struct TaskCardView: View {
         let calendar = Calendar.current
         if task.isOverdue {
             if calendar.isDateInYesterday(date) {
-                return "Yesterday"
+                return "Ayer"
             } else {
-                return "Overdue"
+                return "Vencido"
             }
         } else if calendar.isDateInToday(date) {
-            return "Today"
+            return "Hoy"
         } else if calendar.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Manana"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }

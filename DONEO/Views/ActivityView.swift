@@ -133,9 +133,9 @@ final class ActivityViewModel {
 
         var timeAgo: String {
             let minutes = Int(-uploadedAt.timeIntervalSinceNow / 60)
-            if minutes < 60 { return "\(minutes)m ago" }
-            else if minutes < 1440 { return "\(minutes / 60)h ago" }
-            else { return "\(minutes / 1440)d ago" }
+            if minutes < 60 { return "hace \(minutes)m" }
+            else if minutes < 1440 { return "hace \(minutes / 60)h" }
+            else { return "hace \(minutes / 1440)d" }
         }
     }
 
@@ -344,7 +344,7 @@ final class ActivityViewModel {
         // Send acceptance message to project chat
         let task = dataService.projects[projectIndex].tasks[taskIndex]
         let userMessage = message?.isEmpty == false ? ": \(message!)" : ""
-        let content = "✓ Accepted\(userMessage)"
+        let content = "✓ Aceptado\(userMessage)"
         let chatMessage = Message(
             content: content,
             sender: currentUser,
@@ -363,7 +363,7 @@ final class ActivityViewModel {
 
         // Send decline message to project chat
         let userMessage = reason?.isEmpty == false ? ": \(reason!)" : ""
-        let content = "✗ Declined\(userMessage)"
+        let content = "✗ Rechazado\(userMessage)"
         let chatMessage = Message(
             content: content,
             sender: currentUser,
@@ -466,9 +466,9 @@ final class ActivityViewModel {
 // MARK: - Activity Tab
 
 enum ActivityTab: String, CaseIterable {
-    case new = "New"
-    case active = "Active"
-    case done = "Done"
+    case new = "Nuevo"
+    case active = "Activo"
+    case done = "Hecho"
 }
 
 // MARK: - Activity View
@@ -508,7 +508,7 @@ struct ActivityView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
             .background(Color(uiColor: .systemGroupedBackground))
-            .navigationTitle("Activity")
+            .navigationTitle("Actividad")
             .navigationDestination(for: UUID.self) { projectId in
                 if let project = viewModel.getProject(id: projectId) {
                     ProjectChatView(project: project)
@@ -541,7 +541,7 @@ struct ActivityView: View {
                                 }
                                 return
                             case .decline:
-                                viewModel.declineTask(projectId: task.projectId, taskId: task.taskId, reason: message ?? "I can't take this on")
+                                viewModel.declineTask(projectId: task.projectId, taskId: task.taskId, reason: message ?? "No puedo hacerme cargo de esto")
                             case .ask:
                                 if let msg = message, !msg.isEmpty {
                                     viewModel.sendTaskMessage(projectId: task.projectId, taskId: task.taskId, message: msg)
@@ -589,7 +589,7 @@ struct ActivityView: View {
                                 projectId: selected.group.projectId,
                                 taskId: selected.task.id,
                                 type: .image,
-                                fileName: "Photo_\(Date().formatted(.dateTime.month().day().hour().minute())).jpg",
+                                fileName: "Foto_\(Date().formatted(.dateTime.month().day().hour().minute())).jpg",
                                 caption: nil
                             )
                         },
@@ -599,7 +599,7 @@ struct ActivityView: View {
                                 projectId: selected.group.projectId,
                                 taskId: selected.task.id,
                                 type: .document,
-                                fileName: "Document_\(Date().formatted(.dateTime.month().day())).pdf",
+                                fileName: "Documento_\(Date().formatted(.dateTime.month().day())).pdf",
                                 caption: nil
                             )
                         },
@@ -702,8 +702,8 @@ struct ActivityView: View {
             if viewModel.newTasksByProject.isEmpty {
                 emptyStateView(
                     icon: "bell.slash",
-                    title: "No new tasks",
-                    subtitle: "New task assignments will appear here"
+                    title: "Sin tareas nuevas",
+                    subtitle: "Las nuevas asignaciones de tareas aparecerán aquí"
                 )
             } else {
                 VStack(spacing: 16) {
@@ -733,8 +733,8 @@ struct ActivityView: View {
             if viewModel.activeTasksByProject.isEmpty {
                 emptyStateView(
                     icon: "checkmark.circle",
-                    title: "All caught up!",
-                    subtitle: "No active tasks assigned to you"
+                    title: "¡Todo al día!",
+                    subtitle: "No hay tareas activas asignadas a ti"
                 )
             } else {
                 VStack(spacing: 16) {
@@ -786,8 +786,8 @@ struct ActivityView: View {
             if viewModel.doneTasksByProject.isEmpty {
                 emptyStateView(
                     icon: "tray",
-                    title: "No completed tasks",
-                    subtitle: "Completed tasks will appear here"
+                    title: "Sin tareas completadas",
+                    subtitle: "Las tareas completadas aparecerán aquí"
                 )
             } else {
                 VStack(spacing: 16) {
@@ -935,7 +935,7 @@ struct NewTaskRow: View {
                         .lineLimit(1)
 
                     if task.isOverdue {
-                        Text("OVERDUE")
+                        Text("VENCIDO")
                             .font(.system(size: 9, weight: .bold))
                             .foregroundStyle(.white)
                             .padding(.horizontal, 5)
@@ -943,7 +943,7 @@ struct NewTaskRow: View {
                             .background(.red)
                             .clipShape(RoundedRectangle(cornerRadius: 3))
                     } else if task.isDueToday {
-                        Text("TODAY")
+                        Text("HOY")
                             .font(.system(size: 9, weight: .bold))
                             .foregroundStyle(.white)
                             .padding(.horizontal, 5)
@@ -955,7 +955,7 @@ struct NewTaskRow: View {
 
                 HStack(spacing: 6) {
                     if let assignedBy = task.assignedBy {
-                        Text("from \(assignedBy.components(separatedBy: " ").first ?? assignedBy)")
+                        Text("de \(assignedBy.components(separatedBy: " ").first ?? assignedBy)")
                             .font(.system(size: 11))
                             .foregroundStyle(.secondary)
                     }
@@ -985,7 +985,7 @@ struct NewTaskRow: View {
 
     private func formatDueDate(_ date: Date) -> String {
         if Calendar.current.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Mañana"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }
@@ -1155,7 +1155,7 @@ struct ProjectTaskRow: View {
                         HStack(spacing: 6) {
                             // Overdue/Today indicator
                             if task.isOverdue {
-                                Text("OVERDUE")
+                                Text("VENCIDO")
                                     .font(.system(size: 9, weight: .bold))
                                     .foregroundStyle(.white)
                                     .padding(.horizontal, 5)
@@ -1163,7 +1163,7 @@ struct ProjectTaskRow: View {
                                     .background(.red)
                                     .clipShape(RoundedRectangle(cornerRadius: 3))
                             } else if task.isDueToday {
-                                Text("TODAY")
+                                Text("HOY")
                                     .font(.system(size: 9, weight: .bold))
                                     .foregroundStyle(.white)
                                     .padding(.horizontal, 5)
@@ -1215,7 +1215,7 @@ struct ProjectTaskRow: View {
 
     private func formatDueDate(_ date: Date) -> String {
         if Calendar.current.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Mañana"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }
@@ -1382,7 +1382,7 @@ struct MyTaskRow: View {
 
                         // NEW badge for unacknowledged tasks
                         if task.isNew {
-                            Text("NEW")
+                            Text("NUEVO")
                                 .font(.system(size: 9, weight: .bold))
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 5)
@@ -1395,14 +1395,14 @@ struct MyTaskRow: View {
                     HStack(spacing: 6) {
                         // Show "from [Creator]" for new tasks
                         if task.isNew, let creatorName = task.createdByName {
-                            Text("from \(creatorName)")
+                            Text("de \(creatorName)")
                                 .font(.system(size: 11))
                                 .foregroundStyle(.secondary)
                         }
 
                         // Overdue/Today indicator
                         if task.isOverdue {
-                            Text("OVERDUE")
+                            Text("VENCIDO")
                                 .font(.system(size: 9, weight: .bold))
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 5)
@@ -1410,7 +1410,7 @@ struct MyTaskRow: View {
                                 .background(.red)
                                 .clipShape(RoundedRectangle(cornerRadius: 3))
                         } else if task.isDueToday {
-                            Text("TODAY")
+                            Text("HOY")
                                 .font(.system(size: 9, weight: .bold))
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 5)
@@ -1479,7 +1479,7 @@ struct MyTaskRow: View {
 
     private func formatDueDate(_ date: Date) -> String {
         if Calendar.current.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Mañana"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }
@@ -1552,11 +1552,11 @@ struct NewTaskDetailSheet: View {
                 bottomActionBar
             }
             .background(Color(uiColor: .systemGroupedBackground))
-            .navigationTitle("New Task")
+            .navigationTitle("Nueva Tarea")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { onCancel() }
+                    Button("Cerrar") { onCancel() }
                 }
             }
         }
@@ -1589,7 +1589,7 @@ struct NewTaskDetailSheet: View {
                     .foregroundStyle(Theme.primary)
                 Spacer()
                 if let assignedBy = task.assignedBy {
-                    Text("from \(assignedBy)")
+                    Text("de \(assignedBy)")
                         .font(.system(size: 13))
                         .foregroundStyle(.secondary)
                 }
@@ -1618,7 +1618,7 @@ struct NewTaskDetailSheet: View {
         let assignees = viewModel.getTaskAssignees(projectId: task.projectId, taskId: task.taskId)
         if !assignees.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Assigned to")
+                Text("Asignado a")
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
                 HStack(spacing: 8) {
@@ -1635,7 +1635,7 @@ struct NewTaskDetailSheet: View {
     private var notesSection: some View {
         if let notes = viewModel.getTaskNotes(projectId: task.projectId, taskId: task.taskId), !notes.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Notes & Instructions")
+                Text("Notas e Instrucciones")
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
                 Text(notes)
@@ -1651,7 +1651,7 @@ struct NewTaskDetailSheet: View {
 
     private var bottomActionBar: some View {
         VStack(spacing: 12) {
-            TextField("Add a message (optional)...", text: $message)
+            TextField("Añadir un mensaje (opcional)...", text: $message)
                 .textFieldStyle(.plain)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
@@ -1674,7 +1674,7 @@ struct NewTaskDetailSheet: View {
         Button {
             onAction(.accept, message.isEmpty ? nil : message)
         } label: {
-            Text("Accept")
+            Text("Aceptar")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
@@ -1688,7 +1688,7 @@ struct NewTaskDetailSheet: View {
         Button {
             onAction(.ask, message.isEmpty ? nil : message)
         } label: {
-            Text("Ask")
+            Text("Preguntar")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(Theme.primary)
                 .frame(maxWidth: .infinity)
@@ -1704,7 +1704,7 @@ struct NewTaskDetailSheet: View {
         Button {
             onAction(.decline, message.isEmpty ? nil : message)
         } label: {
-            Text("Decline")
+            Text("Rechazar")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(.red)
                 .frame(maxWidth: .infinity)
@@ -1716,13 +1716,13 @@ struct NewTaskDetailSheet: View {
 
     private func formatDueDate(_ date: Date) -> String {
         let calendar = Calendar.current
-        if calendar.isDateInToday(date) { return "Due today" }
-        if calendar.isDateInTomorrow(date) { return "Due tomorrow" }
+        if calendar.isDateInToday(date) { return "Vence hoy" }
+        if calendar.isDateInTomorrow(date) { return "Vence mañana" }
         if date < Date() {
             let days = calendar.dateComponents([.day], from: date, to: Date()).day ?? 0
-            return "\(days) day\(days == 1 ? "" : "s") overdue"
+            return "\(days) día\(days == 1 ? "" : "s") vencido"
         }
-        return "Due \(date.formatted(.dateTime.month(.abbreviated).day()))"
+        return "Vence \(date.formatted(.dateTime.month(.abbreviated).day()))"
     }
 
     private func dueDateColor(_ date: Date) -> Color {
@@ -1796,7 +1796,7 @@ struct MyTaskDetailSheet: View {
                 // Bottom bar with actions
                 bottomBar
             }
-            .navigationTitle("Task Details")
+            .navigationTitle("Detalles de la Tarea")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -1806,7 +1806,7 @@ struct MyTaskDetailSheet: View {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 14, weight: .semibold))
-                            Text("Back")
+                            Text("Volver")
                         }
                     }
                 }
@@ -1887,7 +1887,7 @@ struct MyTaskDetailSheet: View {
                             HStack(spacing: 4) {
                                 Image(systemName: "doc.text")
                                     .font(.system(size: 11))
-                                Text("Notes")
+                                Text("Notas")
                                     .font(.system(size: 12))
                             }
                             .foregroundStyle(.secondary)
@@ -1960,11 +1960,11 @@ struct MyTaskDetailSheet: View {
                 .font(.system(size: 40))
                 .foregroundStyle(.tertiary)
 
-            Text("No subtasks")
+            Text("Sin subtareas")
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(.secondary)
 
-            Text("This task has no subtasks")
+            Text("Esta tarea no tiene subtareas")
                 .font(.system(size: 14))
                 .foregroundStyle(.tertiary)
 
@@ -2009,7 +2009,7 @@ struct MyTaskDetailSheet: View {
                     HStack(spacing: 6) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 20))
-                        Text("Mark Done")
+                        Text("Marcar Hecho")
                             .font(.system(size: 15, weight: .semibold))
                     }
                     .foregroundStyle(.white)
@@ -2026,7 +2026,7 @@ struct MyTaskDetailSheet: View {
                     HStack(spacing: 6) {
                         Image(systemName: "arrow.right.circle.fill")
                             .font(.system(size: 20))
-                        Text("Project")
+                        Text("Proyecto")
                             .font(.system(size: 15, weight: .semibold))
                     }
                     .foregroundStyle(Theme.primary)
@@ -2043,9 +2043,9 @@ struct MyTaskDetailSheet: View {
 
     private func formatShortDueDate(_ date: Date) -> String {
         let calendar = Calendar.current
-        if calendar.isDateInToday(date) { return "Today" }
-        if calendar.isDateInTomorrow(date) { return "Tomorrow" }
-        if calendar.isDateInYesterday(date) { return "Yesterday" }
+        if calendar.isDateInToday(date) { return "Hoy" }
+        if calendar.isDateInTomorrow(date) { return "Mañana" }
+        if calendar.isDateInYesterday(date) { return "Ayer" }
         return date.formatted(.dateTime.month(.abbreviated).day())
     }
 }
@@ -2118,7 +2118,7 @@ struct MyTaskInfoSheet: View {
                 VStack(spacing: 20) {
                     // Task title
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Task")
+                        Text("Tarea")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -2134,7 +2134,7 @@ struct MyTaskInfoSheet: View {
                     let assignees = viewModel.getTaskAssignees(projectId: task.projectId, taskId: task.id)
                     if !assignees.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Assigned to")
+                            Text("Asignado a")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
 
@@ -2163,7 +2163,7 @@ struct MyTaskInfoSheet: View {
 
                     // Due date
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Due date")
+                        Text("Fecha de vencimiento")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -2181,7 +2181,7 @@ struct MyTaskInfoSheet: View {
                             .background(Color(uiColor: .secondarySystemBackground))
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         } else {
-                            Text("No due date")
+                            Text("Sin fecha de vencimiento")
                                 .font(.system(size: 14))
                                 .foregroundStyle(.tertiary)
                                 .padding(14)
@@ -2193,7 +2193,7 @@ struct MyTaskInfoSheet: View {
 
                     // Notes
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Notes & Instructions")
+                        Text("Notas e Instrucciones")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -2205,7 +2205,7 @@ struct MyTaskInfoSheet: View {
                                 .background(Color(uiColor: .secondarySystemBackground))
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                         } else {
-                            Text("No notes")
+                            Text("Sin notas")
                                 .font(.system(size: 14))
                                 .foregroundStyle(.tertiary)
                                 .padding(14)
@@ -2219,7 +2219,7 @@ struct MyTaskInfoSheet: View {
                     if !task.referenceAttachments.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
-                                Text("Reference Files")
+                                Text("Archivos de Referencia")
                                     .font(.system(size: 13, weight: .medium))
                                     .foregroundStyle(.secondary)
                                 Spacer()
@@ -2239,7 +2239,7 @@ struct MyTaskInfoSheet: View {
                     // Work Uploads
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Work Uploads")
+                            Text("Archivos de Trabajo")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
                             Spacer()
@@ -2251,7 +2251,7 @@ struct MyTaskInfoSheet: View {
                         }
 
                         if task.workAttachments.isEmpty {
-                            Text("No uploads yet")
+                            Text("Sin archivos aún")
                                 .font(.system(size: 14))
                                 .foregroundStyle(.tertiary)
                                 .padding(14)
@@ -2273,7 +2273,7 @@ struct MyTaskInfoSheet: View {
                             } label: {
                                 HStack(spacing: 6) {
                                     Image(systemName: "camera.fill")
-                                    Text("Add Photo")
+                                    Text("Añadir Foto")
                                 }
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundStyle(Theme.primary)
@@ -2288,7 +2288,7 @@ struct MyTaskInfoSheet: View {
                             } label: {
                                 HStack(spacing: 6) {
                                     Image(systemName: "doc.fill")
-                                    Text("Add File")
+                                    Text("Añadir Archivo")
                                 }
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundStyle(Theme.primary)
@@ -2303,7 +2303,7 @@ struct MyTaskInfoSheet: View {
                     // Created by
                     if let creator = task.createdBy {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Created by")
+                            Text("Creado por")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
 
@@ -2335,11 +2335,11 @@ struct MyTaskInfoSheet: View {
                 }
                 .padding()
             }
-            .navigationTitle("Task Info")
+            .navigationTitle("Info de la Tarea")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                    Button("Hecho") {
                         dismiss()
                     }
                 }
@@ -2349,9 +2349,9 @@ struct MyTaskInfoSheet: View {
 
     private func formatDueDate(_ date: Date) -> String {
         let calendar = Calendar.current
-        if calendar.isDateInToday(date) { return "Today" }
-        if calendar.isDateInTomorrow(date) { return "Tomorrow" }
-        if calendar.isDateInYesterday(date) { return "Yesterday" }
+        if calendar.isDateInToday(date) { return "Hoy" }
+        if calendar.isDateInTomorrow(date) { return "Mañana" }
+        if calendar.isDateInYesterday(date) { return "Ayer" }
         return date.formatted(.dateTime.month(.abbreviated).day())
     }
 }
@@ -2374,7 +2374,7 @@ struct ActivitySubtaskDetailSheet: View {
                 VStack(spacing: 20) {
                     // Title
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Subtask")
+                        Text("Subtarea")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -2396,7 +2396,7 @@ struct ActivitySubtaskDetailSheet: View {
 
                     // Parent task
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Parent Task")
+                        Text("Tarea Principal")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -2415,7 +2415,7 @@ struct ActivitySubtaskDetailSheet: View {
 
                     // Instructions
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Instructions")
+                        Text("Instrucciones")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -2427,7 +2427,7 @@ struct ActivitySubtaskDetailSheet: View {
                                 .background(Color(uiColor: .secondarySystemBackground))
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                         } else {
-                            Text("No instructions")
+                            Text("Sin instrucciones")
                                 .font(.system(size: 14))
                                 .foregroundStyle(.tertiary)
                                 .padding(14)
@@ -2440,7 +2440,7 @@ struct ActivitySubtaskDetailSheet: View {
                     // Due date
                     if let dueDate = subtask.dueDate {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Due date")
+                            Text("Fecha de vencimiento")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
 
@@ -2460,12 +2460,12 @@ struct ActivitySubtaskDetailSheet: View {
 
                     // Message to group
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Send message to group")
+                        Text("Enviar mensaje al grupo")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
                         HStack(spacing: 8) {
-                            TextField("Type a message...", text: $message)
+                            TextField("Escribe un mensaje...", text: $message)
                                 .font(.system(size: 15))
                                 .padding(14)
                                 .background(Color(uiColor: .secondarySystemBackground))
@@ -2487,7 +2487,7 @@ struct ActivitySubtaskDetailSheet: View {
                     // Created by
                     if let creator = subtask.createdBy {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Created by")
+                            Text("Creado por")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
 
@@ -2519,11 +2519,11 @@ struct ActivitySubtaskDetailSheet: View {
                 }
                 .padding()
             }
-            .navigationTitle("Subtask Details")
+            .navigationTitle("Detalles de Subtarea")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
+                    Button("Cerrar") {
                         onCancel()
                     }
                 }
@@ -2531,7 +2531,7 @@ struct ActivitySubtaskDetailSheet: View {
                     Button {
                         onToggle()
                     } label: {
-                        Text(subtask.isDone ? "Undo" : "Done")
+                        Text(subtask.isDone ? "Deshacer" : "Hecho")
                             .fontWeight(.semibold)
                     }
                 }
@@ -2541,9 +2541,9 @@ struct ActivitySubtaskDetailSheet: View {
 
     private func formatDueDate(_ date: Date) -> String {
         let calendar = Calendar.current
-        if calendar.isDateInToday(date) { return "Today" }
-        if calendar.isDateInTomorrow(date) { return "Tomorrow" }
-        if calendar.isDateInYesterday(date) { return "Yesterday" }
+        if calendar.isDateInToday(date) { return "Hoy" }
+        if calendar.isDateInTomorrow(date) { return "Mañana" }
+        if calendar.isDateInYesterday(date) { return "Ayer" }
         return date.formatted(.dateTime.month(.abbreviated).day())
     }
 }
@@ -2581,7 +2581,7 @@ struct ReferenceAttachmentRow: View {
                         .font(.system(size: 12))
                         .foregroundStyle(.tertiary)
 
-                    Text("by \(attachment.uploadedByName)")
+                    Text("por \(attachment.uploadedByName)")
                         .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                 }

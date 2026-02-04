@@ -18,7 +18,7 @@ struct PhoneEntryView: View {
                 Text("DONEO")
                     .font(.system(size: 32, weight: .bold))
 
-                Text("Work gets done here")
+                Text("El trabajo se hace aquí")
                     .font(.system(size: 17))
                     .foregroundStyle(.secondary)
             }
@@ -27,7 +27,7 @@ struct PhoneEntryView: View {
 
             // Phone input
             VStack(alignment: .leading, spacing: 8) {
-                Text("Enter your phone number")
+                Text("Ingresa tu número de teléfono")
                     .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(.secondary)
 
@@ -43,7 +43,7 @@ struct PhoneEntryView: View {
 
             // Continue button
             Button(action: onContinue) {
-                Text("Continue")
+                Text("Continuar")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)

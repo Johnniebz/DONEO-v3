@@ -64,7 +64,7 @@ struct OnboardingContainerView: View {
     private func handlePhoneSubmit() {
         let cleaned = phoneNumber.filter { $0.isNumber || $0 == "+" }
         guard cleaned.count >= 10 else {
-            errorMessage = "Please enter a valid phone number"
+            errorMessage = "Por favor ingresa un número de teléfono válido"
             showError = true
             return
         }
@@ -76,7 +76,7 @@ struct OnboardingContainerView: View {
         if AuthManager.shared.verifyCode(verificationCode) {
             currentStep = .profile
         } else {
-            errorMessage = "Invalid verification code. Try 123456"
+            errorMessage = "Código de verificación inválido. Intenta 123456"
             showError = true
         }
     }
@@ -88,7 +88,7 @@ struct OnboardingContainerView: View {
 
     private func handleProfileSetup() {
         guard !userName.trimmingCharacters(in: .whitespaces).isEmpty else {
-            errorMessage = "Please enter your name"
+            errorMessage = "Por favor ingresa tu nombre"
             showError = true
             return
         }
@@ -98,7 +98,7 @@ struct OnboardingContainerView: View {
 
     private func handleCreateProject() {
         guard !firstProjectName.trimmingCharacters(in: .whitespaces).isEmpty else {
-            errorMessage = "Please enter a project name"
+            errorMessage = "Por favor ingresa un nombre de proyecto"
             showError = true
             return
         }

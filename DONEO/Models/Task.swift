@@ -74,8 +74,8 @@ struct DONEOTask: Identifiable, Hashable {
 }
 
 enum TaskStatus: String, CaseIterable {
-    case pending = "Pending"
-    case done = "Done"
+    case pending = "Pendiente"
+    case done = "Hecho"
 }
 
 struct Subtask: Identifiable, Hashable {

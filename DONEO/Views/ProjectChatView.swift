@@ -89,7 +89,7 @@ struct ProjectChatView: View {
                     .foregroundStyle(.primary)
                     .lineLimit(1)
 
-                Text("\(viewModel.project.members.count) members")
+                Text("\(viewModel.project.members.count) \(viewModel.project.members.count == 1 ? "miembro" : "miembros")")
                     .font(.system(size: 12))
                     .foregroundStyle(.secondary)
             }
@@ -148,11 +148,11 @@ struct ProjectChatView: View {
                 .font(.system(size: 40))
                 .foregroundStyle(.tertiary)
 
-            Text("No messages yet")
+            Text("No hay mensajes aún")
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(.secondary)
 
-            Text("Start chatting with your team")
+            Text("Empieza a chatear con tu equipo")
                 .font(.system(size: 14))
                 .foregroundStyle(.tertiary)
 
@@ -162,7 +162,7 @@ struct ProjectChatView: View {
             } label: {
                 HStack {
                     Image(systemName: "checklist")
-                    Text("View Tasks")
+                    Text("Ver Tareas")
                 }
                 .font(.system(size: 14, weight: .medium))
                 .padding(.horizontal, 16)
@@ -187,7 +187,7 @@ struct ProjectChatView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 if let quoted = viewModel.quotedMessage {
-                    Text("Replying to \(quoted.senderName)")
+                    Text("Respondiendo a \(quoted.senderName)")
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
                     Text(quoted.content)
@@ -195,7 +195,7 @@ struct ProjectChatView: View {
                         .foregroundStyle(.primary)
                         .lineLimit(1)
                 } else if let subtaskRef = viewModel.referencedSubtask {
-                    Text("Referencing subtask")
+                    Text("Referenciando subtarea")
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
                     Text(subtaskRef.subtaskTitle)
@@ -203,7 +203,7 @@ struct ProjectChatView: View {
                         .foregroundStyle(Theme.primary)
                         .lineLimit(1)
                 } else if let taskRef = viewModel.referencedTask {
-                    Text("Referencing task")
+                    Text("Referenciando tarea")
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
                     Text(taskRef.taskTitle)
@@ -251,7 +251,7 @@ struct ProjectChatView: View {
             }
 
             // Text field
-            TextField("Message", text: $viewModel.newMessageText, axis: .vertical)
+            TextField("Escribe un mensaje...", text: $viewModel.newMessageText, axis: .vertical)
                 .textFieldStyle(.plain)
                 .lineLimit(1...4)
                 .padding(.horizontal, 12)
@@ -322,7 +322,7 @@ struct ProjectMessageBubble: View {
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(.secondary)
 
-                Text(completed ? "completed" : "reopened")
+                Text(completed ? "completó la subtarea" : "reabrió")
                     .font(.system(size: 13))
                     .foregroundStyle(.secondary)
 
@@ -501,7 +501,7 @@ struct ProjectMessageBubble: View {
                     .foregroundStyle(message.isFromCurrentUser ? .white.opacity(0.8) : Theme.primary)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Photo")
+                    Text("Foto")
                         .font(.system(size: 13, weight: .medium))
                     Text(attachment.fileName)
                         .font(.system(size: 11))
@@ -581,7 +581,7 @@ struct ProjectMessageBubble: View {
                     .foregroundStyle(message.isFromCurrentUser ? .white.opacity(0.8) : .green)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Contact")
+                    Text("Contacto")
                         .font(.system(size: 13, weight: .medium))
                     Text(attachment.fileName)
                         .font(.system(size: 11))
@@ -638,7 +638,7 @@ struct ProjectInfoView: View {
                                 Text("\(viewModel.pendingTasks.count)")
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundStyle(Theme.primary)
-                                Text("Pending")
+                                Text("Pendientes")
                                     .font(.system(size: 12))
                                     .foregroundStyle(.secondary)
                             }
@@ -647,7 +647,7 @@ struct ProjectInfoView: View {
                                 Text("\(viewModel.completedTasks.count)")
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundStyle(.green)
-                                Text("Completed")
+                                Text("Completadas")
                                     .font(.system(size: 12))
                                     .foregroundStyle(.secondary)
                             }
@@ -663,7 +663,7 @@ struct ProjectInfoView: View {
                 // Notifications section
                 Section {
                     Toggle(isOn: $viewModel.isMuted) {
-                        Label("Mute Notifications", systemImage: "bell.slash")
+                        Label("Silenciar Notificaciones", systemImage: "bell.slash")
                     }
                 }
 
@@ -685,7 +685,7 @@ struct ProjectInfoView: View {
                                     Text(member.name)
                                         .font(.system(size: 16))
                                     if member.id == viewModel.currentUser.id {
-                                        Text("You")
+                                        Text("Tú")
                                             .font(.system(size: 12))
                                             .foregroundStyle(.secondary)
                                     }
@@ -698,7 +698,7 @@ struct ProjectInfoView: View {
                         .padding(.vertical, 4)
                     }
                 } header: {
-                    Text("\(viewModel.project.members.count) Members")
+                    Text("\(viewModel.project.members.count) \(viewModel.project.members.count == 1 ? "Miembro" : "Miembros")")
                 }
 
                 // Media & Documents section
@@ -708,10 +708,10 @@ struct ProjectInfoView: View {
                         let photos = viewModel.project.attachments.filter { $0.type == .image }
                         if !photos.isEmpty {
                             NavigationLink {
-                                mediaListView(title: "Photos", attachments: photos)
+                                mediaListView(title: "Fotos", attachments: photos)
                             } label: {
                                 HStack {
-                                    Label("Photos", systemImage: "photo.fill")
+                                    Label("Fotos", systemImage: "photo.fill")
                                     Spacer()
                                     Text("\(photos.count)")
                                         .foregroundStyle(.secondary)
@@ -723,10 +723,10 @@ struct ProjectInfoView: View {
                         let documents = viewModel.project.attachments.filter { $0.type == .document }
                         if !documents.isEmpty {
                             NavigationLink {
-                                mediaListView(title: "Documents", attachments: documents)
+                                mediaListView(title: "Documentos", attachments: documents)
                             } label: {
                                 HStack {
-                                    Label("Documents", systemImage: "doc.fill")
+                                    Label("Documentos", systemImage: "doc.fill")
                                     Spacer()
                                     Text("\(documents.count)")
                                         .foregroundStyle(.secondary)
@@ -749,7 +749,7 @@ struct ProjectInfoView: View {
                             }
                         }
                     } header: {
-                        Text("Media & Documents")
+                        Text("Multimedia y Documentos")
                     }
                 }
 
@@ -758,13 +758,13 @@ struct ProjectInfoView: View {
                     Button {
                         // Export project
                     } label: {
-                        Label("Export Project", systemImage: "square.and.arrow.up")
+                        Label("Exportar Proyecto", systemImage: "square.and.arrow.up")
                     }
 
                     Button {
                         // Copy link
                     } label: {
-                        Label("Copy Link", systemImage: "link")
+                        Label("Copiar Enlace", systemImage: "link")
                     }
                 }
 
@@ -773,16 +773,16 @@ struct ProjectInfoView: View {
                     Button(role: .destructive) {
                         // Leave project
                     } label: {
-                        Label("Leave Project", systemImage: "rectangle.portrait.and.arrow.right")
+                        Label("Salir del Proyecto", systemImage: "rectangle.portrait.and.arrow.right")
                     }
                 }
             }
             .listStyle(.insetGrouped)
-            .navigationTitle("Project Info")
+            .navigationTitle("Info del Proyecto")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                    Button("Listo") {
                         dismiss()
                     }
                     .fontWeight(.semibold)
@@ -873,9 +873,9 @@ struct ProjectAttachmentSheet: View {
     @State private var showingFilePicker = false
 
     enum AttachmentTab: String, CaseIterable {
-        case photos = "Photos"
-        case files = "Files"
-        case contact = "Contact"
+        case photos = "Fotos"
+        case files = "Archivos"
+        case contact = "Contacto"
 
         var icon: String {
             switch self {
@@ -938,7 +938,7 @@ struct ProjectAttachmentSheet: View {
                 Button {
                     showingUploadDetails = true
                 } label: {
-                    Text("Next (\(selectedPhotoItems.count))")
+                    Text("Siguiente (\(selectedPhotoItems.count))")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 12)
@@ -957,9 +957,9 @@ struct ProjectAttachmentSheet: View {
 
     private var headerTitle: String {
         switch selectedTab {
-        case .photos: return "Recents"
-        case .files: return "Files"
-        case .contact: return "Contacts"
+        case .photos: return "Recientes"
+        case .files: return "Archivos"
+        case .contact: return "Contactos"
         }
     }
 
@@ -1024,17 +1024,17 @@ struct ProjectAttachmentSheet: View {
                         .font(.system(size: 48))
                         .foregroundStyle(Theme.primary.opacity(0.6))
 
-                    Text("Select Photos")
+                    Text("Seleccionar Fotos")
                         .font(.system(size: 18, weight: .semibold))
 
-                    Text("Choose photos from your library")
+                    Text("Elige fotos de tu biblioteca")
                         .font(.system(size: 14))
                         .foregroundStyle(.secondary)
 
                     HStack(spacing: 8) {
                         Image(systemName: "photo.stack")
                             .font(.system(size: 16))
-                        Text(selectedPhotoItems.isEmpty ? "Tap to select" : "\(selectedPhotoItems.count) selected")
+                        Text(selectedPhotoItems.isEmpty ? "Toca para seleccionar" : "\(selectedPhotoItems.count) seleccionadas")
                             .font(.system(size: 15, weight: .medium))
                     }
                     .foregroundStyle(.white)
@@ -1082,10 +1082,10 @@ struct ProjectAttachmentSheet: View {
                     .font(.system(size: 48))
                     .foregroundStyle(Theme.primary.opacity(0.6))
 
-                Text("Browse Files")
+                Text("Explorar Archivos")
                     .font(.system(size: 18, weight: .semibold))
 
-                Text("Select documents, PDFs, or other files")
+                Text("Selecciona documentos, PDFs u otros archivos")
                     .font(.system(size: 14))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -1093,7 +1093,7 @@ struct ProjectAttachmentSheet: View {
                 Button {
                     showingFilePicker = true
                 } label: {
-                    Text("Choose File")
+                    Text("Elegir Archivo")
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 24)
@@ -1145,10 +1145,10 @@ struct ProjectAttachmentSheet: View {
                     .font(.system(size: 48))
                     .foregroundStyle(Theme.primary.opacity(0.6))
 
-                Text("Share Contact")
+                Text("Compartir Contacto")
                     .font(.system(size: 18, weight: .semibold))
 
-                Text("Share a contact card with your team")
+                Text("Comparte una tarjeta de contacto con tu equipo")
                     .font(.system(size: 14))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -1156,7 +1156,7 @@ struct ProjectAttachmentSheet: View {
                 Button {
                     // Open contact picker
                 } label: {
-                    Text("Choose Contact")
+                    Text("Elegir Contacto")
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 24)
@@ -1226,7 +1226,7 @@ struct AttachmentUploadSheet: View {
                 VStack(alignment: .leading, spacing: 24) {
                     // Preview
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Selected")
+                        Text("Seleccionados")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -1277,10 +1277,10 @@ struct AttachmentUploadSheet: View {
                     // Link to task (optional)
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
-                            Text("Link to task")
+                            Text("Vincular a tarea")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
-                            Text("(optional)")
+                            Text("(opcional)")
                                 .font(.system(size: 11))
                                 .foregroundStyle(.tertiary)
                         }
@@ -1293,7 +1293,7 @@ struct AttachmentUploadSheet: View {
                                     selectedTaskId = nil
                                     selectedSubtaskId = nil
                                 } label: {
-                                    Text("None")
+                                    Text("Ninguna")
                                         .font(.system(size: 14, weight: .medium))
                                         .padding(.horizontal, 14)
                                         .padding(.vertical, 8)
@@ -1325,10 +1325,10 @@ struct AttachmentUploadSheet: View {
                     if let task = selectedTask, !task.subtasks.isEmpty {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {
-                                Text("Link to subtask")
+                                Text("Vincular a subtarea")
                                     .font(.system(size: 13, weight: .medium))
                                     .foregroundStyle(.secondary)
-                                Text("(optional)")
+                                Text("(opcional)")
                                     .font(.system(size: 11))
                                     .foregroundStyle(.tertiary)
                             }
@@ -1338,7 +1338,7 @@ struct AttachmentUploadSheet: View {
                                     Button {
                                         selectedSubtaskId = nil
                                     } label: {
-                                        Text("None")
+                                        Text("Ninguna")
                                             .font(.system(size: 14, weight: .medium))
                                             .padding(.horizontal, 14)
                                             .padding(.vertical, 8)
@@ -1369,15 +1369,15 @@ struct AttachmentUploadSheet: View {
                     // Caption
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Caption")
+                            Text("Descripción")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
-                            Text("(optional)")
+                            Text("(opcional)")
                                 .font(.system(size: 11))
                                 .foregroundStyle(.tertiary)
                         }
 
-                        TextField("Add a description...", text: $caption, axis: .vertical)
+                        TextField("Añadir una descripción...", text: $caption, axis: .vertical)
                             .font(.system(size: 15))
                             .lineLimit(2...4)
                             .padding(14)
@@ -1387,16 +1387,16 @@ struct AttachmentUploadSheet: View {
                 }
                 .padding()
             }
-            .navigationTitle("Add Details")
+            .navigationTitle("Añadir Detalles")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Send") {
+                    Button("Enviar") {
                         // Create attachment items from images
                         var items: [(type: AttachmentType, fileName: String, fileSize: Int64, fileURL: URL?)] = selectedImages.enumerated().map { index, _ in
                             (type: .image, fileName: "Photo_\(Date().timeIntervalSince1970)_\(index).jpg", fileSize: 0, fileURL: nil)
@@ -1438,9 +1438,9 @@ struct ProjectNewTasksInboxSheet: View {
             Group {
                 if viewModel.newTasksForCurrentUser.isEmpty {
                     ContentUnavailableView(
-                        "All Caught Up",
+                        "Todo al día",
                         systemImage: "tray",
-                        description: Text("No new task assignments")
+                        description: Text("No hay nuevas asignaciones de tareas")
                     )
                 } else {
                     ScrollView {
@@ -1456,11 +1456,11 @@ struct ProjectNewTasksInboxSheet: View {
                     }
                 }
             }
-            .navigationTitle("New Tasks")
+            .navigationTitle("Tareas Nuevas")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Done") {
+                    Button("Listo") {
                         dismiss()
                     }
                 }
@@ -1518,7 +1518,7 @@ struct NewTaskInboxRow: View {
                             .lineLimit(1)
 
                         if task.isOverdue {
-                            Text("OVERDUE")
+                            Text("VENCIDA")
                                 .font(.system(size: 9, weight: .bold))
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 5)
@@ -1526,7 +1526,7 @@ struct NewTaskInboxRow: View {
                                 .background(.red)
                                 .clipShape(RoundedRectangle(cornerRadius: 3))
                         } else if task.isDueToday {
-                            Text("TODAY")
+                            Text("HOY")
                                 .font(.system(size: 9, weight: .bold))
                                 .foregroundStyle(.white)
                                 .padding(.horizontal, 5)
@@ -1538,7 +1538,7 @@ struct NewTaskInboxRow: View {
 
                     HStack(spacing: 6) {
                         if let createdBy = task.createdBy {
-                            Text("from \(createdBy.displayFirstName)")
+                            Text("de \(createdBy.displayFirstName)")
                                 .font(.system(size: 12))
                                 .foregroundStyle(.secondary)
                         }
@@ -1584,7 +1584,7 @@ struct NewTaskInboxRow: View {
 
     private func formatDueDate(_ date: Date) -> String {
         if Calendar.current.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Mañana"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }
@@ -1618,7 +1618,7 @@ struct NewTaskInboxDetailSheet: View {
 
                         HStack(spacing: 8) {
                             if let createdBy = task.createdBy {
-                                Label("from \(createdBy.displayFirstName)", systemImage: "person")
+                                Label("de \(createdBy.displayFirstName)", systemImage: "person")
                                     .font(.system(size: 13))
                                     .foregroundStyle(.secondary)
                             }
@@ -1638,7 +1638,7 @@ struct NewTaskInboxDetailSheet: View {
                     // Notes section
                     if let notes = task.notes, !notes.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
-                            Label("Notes", systemImage: "doc.text")
+                            Label("Notas", systemImage: "doc.text")
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundStyle(.secondary)
 
@@ -1654,7 +1654,7 @@ struct NewTaskInboxDetailSheet: View {
                     // Subtasks section
                     if !task.subtasks.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
-                            Label("\(task.subtasks.count) Subtasks", systemImage: "checklist")
+                            Label("\(task.subtasks.count) Subtareas", systemImage: "checklist")
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundStyle(.secondary)
 
@@ -1677,15 +1677,15 @@ struct NewTaskInboxDetailSheet: View {
 
                     // Response section
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Your Response")
+                        Text("Tu Respuesta")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(.secondary)
 
                         // Action picker
-                        Picker("Action", selection: $selectedAction) {
-                            Text("Accept").tag(NewTaskAction.accept)
-                            Text("Decline").tag(NewTaskAction.decline)
-                            Text("Ask").tag(NewTaskAction.ask)
+                        Picker("Acción", selection: $selectedAction) {
+                            Text("Aceptar").tag(NewTaskAction.accept)
+                            Text("Rechazar").tag(NewTaskAction.decline)
+                            Text("Preguntar").tag(NewTaskAction.ask)
                         }
                         .pickerStyle(.segmented)
 
@@ -1705,7 +1705,7 @@ struct NewTaskInboxDetailSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         onCancel()
                     }
                 }
@@ -1723,17 +1723,17 @@ struct NewTaskInboxDetailSheet: View {
 
     private var placeholderText: String {
         switch selectedAction {
-        case .accept: return "Add a message (optional)"
-        case .decline: return "Reason for declining (optional)"
-        case .ask: return "What would you like to ask?"
+        case .accept: return "Añadir un mensaje (opcional)"
+        case .decline: return "Razón para rechazar (opcional)"
+        case .ask: return "¿Qué te gustaría preguntar?"
         }
     }
 
     private var actionButtonText: String {
         switch selectedAction {
-        case .accept: return "Accept"
-        case .decline: return "Decline"
-        case .ask: return "Send"
+        case .accept: return "Aceptar"
+        case .decline: return "Rechazar"
+        case .ask: return "Enviar"
         }
     }
 

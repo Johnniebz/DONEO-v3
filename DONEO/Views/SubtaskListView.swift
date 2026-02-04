@@ -7,7 +7,7 @@ struct SubtaskListView: View {
         VStack(alignment: .leading, spacing: 12) {
             // Header with progress
             HStack {
-                Text("Subtasks")
+                Text("Subtareas")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(.secondary)
 
@@ -60,14 +60,14 @@ struct SubtaskListView: View {
                         .font(.system(size: 18))
                         .foregroundStyle(.secondary)
 
-                    TextField("What needs to be done?", text: $viewModel.newSubtaskTitle)
+                    TextField("Que hay que hacer?", text: $viewModel.newSubtaskTitle)
                         .textFieldStyle(.plain)
                         .submitLabel(.done)
                         .onSubmit {
                             viewModel.addSubtask()
                         }
 
-                    Button("Add") {
+                    Button("Agregar") {
                         viewModel.addSubtask()
                     }
                     .font(.system(size: 14, weight: .medium))

@@ -48,15 +48,15 @@ struct Activity: Identifiable {
         let firstName = actorName.components(separatedBy: " ").first ?? actorName
         switch type {
         case .taskAssigned:
-            return "\(firstName) assigned you: \(taskTitle ?? "a task")"
+            return "\(firstName) te asignó: \(taskTitle ?? "una tarea")"
         case .taskCompleted:
-            return "\(firstName) completed: \(taskTitle ?? "a task")"
+            return "\(firstName) completó: \(taskTitle ?? "una tarea")"
         case .taskReopened:
-            return "\(firstName) reopened: \(taskTitle ?? "a task")"
+            return "\(firstName) reabrió: \(taskTitle ?? "una tarea")"
         case .taskCreated:
-            return "\(firstName) created: \(taskTitle ?? "a task")"
+            return "\(firstName) creó: \(taskTitle ?? "una tarea")"
         case .messageSent:
-            return "\(firstName): \(messagePreview ?? "sent a message")"
+            return "\(firstName): \(messagePreview ?? "envió un mensaje")"
         }
     }
 
@@ -94,11 +94,11 @@ final class MockDataService {
     // MARK: - Mock Users
 
     static let allUsers: [User] = [
-        User(name: "Alex Johnson", phoneNumber: "+1 555-0100"),
-        User(name: "Maria Garcia", phoneNumber: "+1 555-0101"),
-        User(name: "James Wilson", phoneNumber: "+1 555-0102"),
-        User(name: "Sarah Chen", phoneNumber: "+1 555-0103"),
-        User(name: "Mike Thompson", phoneNumber: "+1 555-0104")
+        User(name: "Alejandro García", phoneNumber: "+34 612-345-678"),
+        User(name: "María López", phoneNumber: "+34 623-456-789"),
+        User(name: "Carlos Rodríguez", phoneNumber: "+34 634-567-890"),
+        User(name: "Sofía Martínez", phoneNumber: "+34 645-678-901"),
+        User(name: "Miguel Fernández", phoneNumber: "+34 656-789-012")
     ]
 
     private var _currentUser: User
@@ -159,19 +159,19 @@ final class MockDataService {
     func loadMockActivities() {
         guard activities.isEmpty else { return }
         let maria = Self.allUsers[1]
-        let james = Self.allUsers[2]
-        let sarah = Self.allUsers[3]
+        let carlos = Self.allUsers[2]
+        let sofia = Self.allUsers[3]
 
         guard let project1 = projects.first,
               let project2 = projects.dropFirst().first else { return }
 
         // Create some mock activities
         activities = [
-            Activity(type: .messageSent, timestamp: Date().addingTimeInterval(-300), actor: maria, project: project1, messagePreview: "Can you check the measurements?"),
-            Activity(type: .taskCompleted, timestamp: Date().addingTimeInterval(-1800), actor: james, project: project1, task: project1.tasks.first { $0.status == .done }),
-            Activity(type: .taskAssigned, timestamp: Date().addingTimeInterval(-3600), actor: sarah, project: project2, task: project2.tasks.first),
+            Activity(type: .messageSent, timestamp: Date().addingTimeInterval(-300), actor: maria, project: project1, messagePreview: "¿Puedes revisar las medidas?"),
+            Activity(type: .taskCompleted, timestamp: Date().addingTimeInterval(-1800), actor: carlos, project: project1, task: project1.tasks.first { $0.status == .done }),
+            Activity(type: .taskAssigned, timestamp: Date().addingTimeInterval(-3600), actor: sofia, project: project2, task: project2.tasks.first),
             Activity(type: .taskCreated, timestamp: Date().addingTimeInterval(-7200), actor: maria, project: project1, task: project1.tasks.first),
-            Activity(type: .messageSent, timestamp: Date().addingTimeInterval(-86400), actor: james, project: project1, messagePreview: "I'll finish the tiling tomorrow"),
+            Activity(type: .messageSent, timestamp: Date().addingTimeInterval(-86400), actor: carlos, project: project1, messagePreview: "Terminaré los azulejos mañana"),
         ]
     }
 
@@ -182,11 +182,11 @@ final class MockDataService {
     // MARK: - Mock Projects
 
     private func createMockProjects() -> [Project] {
-        let alex = Self.allUsers[0]
+        let alejandro = Self.allUsers[0]
         let maria = Self.allUsers[1]
-        let james = Self.allUsers[2]
-        let sarah = Self.allUsers[3]
-        let mike = Self.allUsers[4]
+        let carlos = Self.allUsers[2]
+        let sofia = Self.allUsers[3]
+        let miguel = Self.allUsers[4]
 
         let today = Date()
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: today)
@@ -196,19 +196,19 @@ final class MockDataService {
         // Create sample messages for projects
         let project1Messages: [Message] = [
             Message(
-                content: "Let's start ordering the kitchen materials this week",
-                sender: alex,
+                content: "Empecemos a pedir los materiales de cocina esta semana",
+                sender: alejandro,
                 timestamp: Calendar.current.date(byAdding: .hour, value: -5, to: today) ?? today,
                 isFromCurrentUser: true
             ),
             Message(
-                content: "I'll get the quotes from suppliers today",
+                content: "Hoy conseguiré los presupuestos de los proveedores",
                 sender: maria,
                 timestamp: Calendar.current.date(byAdding: .hour, value: -4, to: today) ?? today,
                 isFromCurrentUser: false
             ),
             Message(
-                content: "Can you check the measurements?",
+                content: "¿Puedes revisar las medidas?",
                 sender: maria,
                 timestamp: Calendar.current.date(byAdding: .minute, value: -30, to: today) ?? today,
                 isFromCurrentUser: false
@@ -217,14 +217,14 @@ final class MockDataService {
 
         let project2Messages: [Message] = [
             Message(
-                content: "Final walkthrough scheduled for tomorrow",
-                sender: alex,
+                content: "Inspección final programada para mañana",
+                sender: alejandro,
                 timestamp: Calendar.current.date(byAdding: .hour, value: -3, to: today) ?? today,
                 isFromCurrentUser: true
             ),
             Message(
-                content: "I'll prepare the checklist",
-                sender: sarah,
+                content: "Prepararé la lista de verificación",
+                sender: sofia,
                 timestamp: Calendar.current.date(byAdding: .hour, value: -2, to: today) ?? today,
                 isFromCurrentUser: false
             )
@@ -232,19 +232,19 @@ final class MockDataService {
 
         let project3Messages: [Message] = [
             Message(
-                content: "HVAC units need to be ordered by Friday",
-                sender: mike,
+                content: "Las unidades de climatización deben pedirse antes del viernes",
+                sender: miguel,
                 timestamp: Calendar.current.date(byAdding: .day, value: -1, to: today) ?? today,
                 isFromCurrentUser: false
             ),
             Message(
-                content: "Got it, I'll coordinate with the supplier",
-                sender: alex,
+                content: "Entendido, coordinaré con el proveedor",
+                sender: alejandro,
                 timestamp: Calendar.current.date(byAdding: .hour, value: -6, to: today) ?? today,
                 isFromCurrentUser: true
             ),
             Message(
-                content: "Blueprints review meeting tomorrow at 10am",
+                content: "Reunión de revisión de planos mañana a las 10am",
                 sender: maria,
                 timestamp: Calendar.current.date(byAdding: .minute, value: -45, to: today) ?? today,
                 isFromCurrentUser: false
@@ -253,384 +253,384 @@ final class MockDataService {
 
         // Create tasks with known IDs for notification tracking
         let task1_1 = DONEOTask(
-            title: "Order materials for kitchen",
+            title: "Pedir materiales para la cocina",
             assignees: [maria],
             status: .pending,
             dueDate: today,
             subtasks: [
-                Subtask(title: "Get quotes from 3 suppliers", isDone: true, assignees: [maria], createdBy: james),
-                Subtask(title: "Compare prices and quality", isDone: true, assignees: [maria, james], createdBy: james),
-                Subtask(title: "Place order with selected vendor", isDone: false, assignees: [maria], createdBy: james),
-                Subtask(title: "Confirm delivery date", isDone: false, createdBy: james)
+                Subtask(title: "Obtener presupuestos de 3 proveedores", isDone: true, assignees: [maria], createdBy: carlos),
+                Subtask(title: "Comparar precios y calidad", isDone: true, assignees: [maria, carlos], createdBy: carlos),
+                Subtask(title: "Realizar pedido con el proveedor seleccionado", isDone: false, assignees: [maria], createdBy: carlos),
+                Subtask(title: "Confirmar fecha de entrega", isDone: false, createdBy: carlos)
             ],
             attachments: [
                 Attachment(
                     type: .document,
                     category: .reference,
-                    fileName: "Kitchen_Materials_List.pdf",
+                    fileName: "Lista_Materiales_Cocina.pdf",
                     fileSize: 245_000,
-                    uploadedBy: james
+                    uploadedBy: carlos
                 ),
                 Attachment(
                     type: .image,
                     category: .reference,
-                    fileName: "Kitchen_Blueprint.jpg",
+                    fileName: "Plano_Cocina.jpg",
                     fileSize: 1_200_000,
-                    uploadedBy: james
+                    uploadedBy: carlos
                 )
             ],
             notes: """
-            Contact: HomeDepot Pro Desk
-            Phone: (555) 123-4567
-            Account #: PRO-2847593
+            Contacto: Leroy Merlin Pro
+            Teléfono: (91) 123-4567
+            Cuenta #: PRO-2847593
 
-            Materials needed:
-            - 24 sq ft ceramic tiles (Tuscany Beige)
-            - 3 bags thin-set mortar
-            - Grout (Sandstone color)
-            - Tile spacers 1/4"
+            Materiales necesarios:
+            - 24 m² azulejos cerámicos (Toscana Beige)
+            - 3 sacos de cemento cola
+            - Lechada (color Arena)
+            - Crucetas de 6mm
 
-            Delivery address:
-            742 Maple Street, Downtown
+            Dirección de entrega:
+            Calle Mayor 742, Centro
             """,
-            createdBy: james
+            createdBy: carlos
         )
         let task1_2 = DONEOTask(
-            title: "Schedule electrical inspection",
-            assignees: [alex],
+            title: "Programar inspección eléctrica",
+            assignees: [alejandro],
             status: .pending,
             dueDate: tomorrow,
             subtasks: [
-                Subtask(title: "Call inspector office", isDone: true, assignees: [alex], createdBy: maria),
-                Subtask(title: "Prepare documentation", isDone: false, assignees: [james, alex], createdBy: maria),
-                Subtask(title: "Clear access to electrical panel", isDone: false, createdBy: maria)
+                Subtask(title: "Llamar a la oficina del inspector", isDone: true, assignees: [alejandro], createdBy: maria),
+                Subtask(title: "Preparar documentación", isDone: false, assignees: [carlos, alejandro], createdBy: maria),
+                Subtask(title: "Despejar acceso al cuadro eléctrico", isDone: false, createdBy: maria)
             ],
             notes: """
-            City Inspector: Bob Martinez
-            Office: (555) 234-5678
+            Inspector Municipal: Roberto Martínez
+            Oficina: (91) 234-5678
 
-            Required documents:
-            - Permit #EL-2024-0847
-            - Electrical plans (revised)
-            - Contractor license copy
+            Documentos requeridos:
+            - Permiso #EL-2024-0847
+            - Planos eléctricos (revisados)
+            - Copia licencia de contratista
 
-            Inspector prefers morning appointments (8-10am)
+            El inspector prefiere citas por la mañana (8-10am)
             """,
             createdBy: maria,
-            acknowledgedBy: [alex.id] // Alex has accepted this task
+            acknowledgedBy: [alejandro.id] // Alejandro has accepted this task
         )
-        let task1_3 = DONEOTask(title: "Complete bathroom tiling", assignees: [james], status: .done, createdBy: alex)
+        let task1_3 = DONEOTask(title: "Completar azulejos del baño", assignees: [carlos], status: .done, createdBy: alejandro)
 
-        // New task for Alex - painting
+        // New task for Alejandro - painting
         let task1_4_paint = DONEOTask(
-            title: "Paint living room walls",
-            assignees: [alex, james],
+            title: "Pintar paredes del salón",
+            assignees: [alejandro, carlos],
             status: .pending,
             dueDate: tomorrow,
             subtasks: [
-                Subtask(title: "Buy paint supplies", isDone: true, assignees: [james], createdBy: maria),
-                Subtask(title: "Prep walls and tape edges", isDone: false, assignees: [alex], createdBy: maria),
-                Subtask(title: "Apply first coat", isDone: false, assignees: [alex, james], createdBy: maria),
-                Subtask(title: "Apply second coat", isDone: false, createdBy: maria)
+                Subtask(title: "Comprar materiales de pintura", isDone: true, assignees: [carlos], createdBy: maria),
+                Subtask(title: "Preparar paredes y poner cinta", isDone: false, assignees: [alejandro], createdBy: maria),
+                Subtask(title: "Aplicar primera capa", isDone: false, assignees: [alejandro, carlos], createdBy: maria),
+                Subtask(title: "Aplicar segunda capa", isDone: false, createdBy: maria)
             ],
-            notes: "Color: Benjamin Moore Cloud White OC-130\n2 gallons needed",
+            notes: "Color: Blanco Nube OC-130\nSe necesitan 8 litros",
             createdBy: maria
-            // Not acknowledged by Alex yet - NEW task
+            // Not acknowledged by Alejandro yet - NEW task
         )
 
         let task1_5 = DONEOTask(
-            title: "Install new windows",
-            assignees: [alex],
+            title: "Instalar ventanas nuevas",
+            assignees: [alejandro],
             status: .pending,
             dueDate: nextWeek,
             subtasks: [
-                Subtask(title: "Measure all window frames", isDone: false, assignees: [james], createdBy: james),
-                Subtask(title: "Order custom windows", isDone: false, assignees: [maria, alex], createdBy: james),
-                Subtask(title: "Remove old windows", isDone: false, createdBy: james),
-                Subtask(title: "Install new windows", isDone: false, createdBy: james),
-                Subtask(title: "Seal and insulate", isDone: false, createdBy: james)
+                Subtask(title: "Medir todos los marcos de ventanas", isDone: false, assignees: [carlos], createdBy: carlos),
+                Subtask(title: "Pedir ventanas a medida", isDone: false, assignees: [maria, alejandro], createdBy: carlos),
+                Subtask(title: "Retirar ventanas antiguas", isDone: false, createdBy: carlos),
+                Subtask(title: "Instalar ventanas nuevas", isDone: false, createdBy: carlos),
+                Subtask(title: "Sellar y aislar", isDone: false, createdBy: carlos)
             ],
             attachments: [
                 Attachment(
                     type: .document,
                     category: .reference,
-                    fileName: "Window_Specifications.pdf",
+                    fileName: "Especificaciones_Ventanas.pdf",
                     fileSize: 890_000,
-                    uploadedBy: james
+                    uploadedBy: carlos
                 ),
                 Attachment(
                     type: .image,
                     category: .reference,
-                    fileName: "Window_Measurements_Photo.jpg",
+                    fileName: "Foto_Medidas_Ventanas.jpg",
                     fileSize: 2_400_000,
-                    uploadedBy: james
+                    uploadedBy: carlos
                 ),
                 Attachment(
                     type: .image,
                     category: .work,
-                    fileName: "Old_Window_Removed.jpg",
+                    fileName: "Ventana_Antigua_Retirada.jpg",
                     fileSize: 1_800_000,
-                    uploadedBy: alex,
-                    caption: "First window removed successfully"
+                    uploadedBy: alejandro,
+                    caption: "Primera ventana retirada con éxito"
                 )
             ],
             notes: """
-            Window supplier: ClearView Glass Co.
-            Sales rep: Jennifer Wong
-            Phone: (555) 345-6789
+            Proveedor de ventanas: Cristalería Vista Clara
+            Comercial: Javier Wong
+            Teléfono: (91) 345-6789
 
-            Specs: Double-pane, Low-E, Argon filled
-            Frame color: White vinyl
+            Especificaciones: Doble cristal, Bajo emisivo, Relleno de argón
+            Color del marco: PVC blanco
 
-            Lead time: 2-3 weeks for custom sizes
+            Plazo de entrega: 2-3 semanas para medidas personalizadas
             """,
-            createdBy: james,
-            acknowledgedBy: [alex.id] // Alex acknowledged
+            createdBy: carlos,
+            acknowledgedBy: [alejandro.id] // Alejandro acknowledged
         )
 
         // More tasks for Downtown Renovation
         let task1_6 = DONEOTask(
-            title: "Fix leaking faucet in kitchen",
-            assignees: [alex],
+            title: "Reparar grifo con fuga en la cocina",
+            assignees: [alejandro],
             status: .pending,
             dueDate: today,
-            notes: "Client reported leak under sink. Check P-trap and connections.",
+            notes: "El cliente reportó fuga bajo el fregadero. Revisar sifón y conexiones.",
             createdBy: maria,
-            acknowledgedBy: [alex.id]
+            acknowledgedBy: [alejandro.id]
         )
 
         let task1_7 = DONEOTask(
-            title: "Install cabinet hardware",
-            assignees: [alex],
+            title: "Instalar tiradores de armarios",
+            assignees: [alejandro],
             status: .pending,
             subtasks: [
-                Subtask(title: "Unpack all hardware", isDone: true, assignees: [alex], createdBy: james),
-                Subtask(title: "Mark drill positions", isDone: true, assignees: [alex], createdBy: james),
-                Subtask(title: "Install handles on upper cabinets", isDone: false, createdBy: james),
-                Subtask(title: "Install handles on lower cabinets", isDone: false, createdBy: james),
-                Subtask(title: "Install drawer pulls", isDone: false, createdBy: james)
+                Subtask(title: "Desempaquetar todos los tiradores", isDone: true, assignees: [alejandro], createdBy: carlos),
+                Subtask(title: "Marcar posiciones de taladro", isDone: true, assignees: [alejandro], createdBy: carlos),
+                Subtask(title: "Instalar tiradores en armarios superiores", isDone: false, createdBy: carlos),
+                Subtask(title: "Instalar tiradores en armarios inferiores", isDone: false, createdBy: carlos),
+                Subtask(title: "Instalar tiradores de cajones", isDone: false, createdBy: carlos)
             ],
-            createdBy: james,
-            acknowledgedBy: [alex.id]
+            createdBy: carlos,
+            acknowledgedBy: [alejandro.id]
         )
 
         let task2_1 = DONEOTask(
-            title: "Final walkthrough",
-            assignees: [alex],
+            title: "Inspección final",
+            assignees: [alejandro],
             status: .pending,
             dueDate: yesterday,
             subtasks: [
-                Subtask(title: "Check all rooms", isDone: true, assignees: [alex], createdBy: sarah),
-                Subtask(title: "Test electrical outlets", isDone: true, createdBy: sarah),
-                Subtask(title: "Test plumbing", isDone: false, assignees: [alex, sarah], createdBy: sarah),
-                Subtask(title: "Document any issues", isDone: false, assignees: [sarah], createdBy: sarah)
+                Subtask(title: "Revisar todas las habitaciones", isDone: true, assignees: [alejandro], createdBy: sofia),
+                Subtask(title: "Probar enchufes eléctricos", isDone: true, createdBy: sofia),
+                Subtask(title: "Probar fontanería", isDone: false, assignees: [alejandro, sofia], createdBy: sofia),
+                Subtask(title: "Documentar cualquier incidencia", isDone: false, assignees: [sofia], createdBy: sofia)
             ],
             attachments: [
                 Attachment(
                     type: .document,
                     category: .reference,
-                    fileName: "Walkthrough_Checklist.pdf",
+                    fileName: "Lista_Verificacion_Inspeccion.pdf",
                     fileSize: 156_000,
-                    uploadedBy: sarah
+                    uploadedBy: sofia
                 ),
                 Attachment(
                     type: .image,
                     category: .work,
-                    fileName: "Living_Room_Complete.jpg",
+                    fileName: "Salon_Completado.jpg",
                     fileSize: 2_100_000,
-                    uploadedBy: alex,
-                    caption: "Living room inspection passed"
+                    uploadedBy: alejandro,
+                    caption: "Inspección del salón aprobada"
                 ),
                 Attachment(
                     type: .image,
                     category: .work,
-                    fileName: "Kitchen_Outlets_Test.jpg",
+                    fileName: "Prueba_Enchufes_Cocina.jpg",
                     fileSize: 1_900_000,
-                    uploadedBy: alex,
-                    caption: "All kitchen outlets working"
+                    uploadedBy: alejandro,
+                    caption: "Todos los enchufes de cocina funcionando"
                 )
             ],
             notes: """
-            Property: Smith Residence
-            Address: 1847 Oak Avenue, Riverside
+            Propiedad: Residencia Sánchez
+            Dirección: Avenida del Roble 1847, Riverside
 
-            Client contact: Mr. & Mrs. Smith
-            Phone: (555) 456-7890
+            Contacto del cliente: Sr. y Sra. Sánchez
+            Teléfono: (91) 456-7890
 
-            Gate code: 4523
-            Lockbox code: 1234
+            Código de puerta: 4523
+            Código del candado: 1234
 
-            Take photos of any issues found!
+            ¡Tomar fotos de cualquier incidencia encontrada!
             """,
-            createdBy: sarah,
-            acknowledgedBy: [alex.id] // Alex has accepted this task
+            createdBy: sofia,
+            acknowledgedBy: [alejandro.id] // Alejandro has accepted this task
         )
-        let task2_2 = DONEOTask(title: "Fix garage door", assignees: [sarah], status: .done, createdBy: alex)
+        let task2_2 = DONEOTask(title: "Reparar puerta del garaje", assignees: [sofia], status: .done, createdBy: alejandro)
 
         // New tasks for Smith Residence
         let task2_3 = DONEOTask(
-            title: "Touch up paint in hallway",
-            assignees: [alex],
+            title: "Retocar pintura del pasillo",
+            assignees: [alejandro],
             status: .pending,
             dueDate: today,
-            notes: "Small scuffs near front door. Paint code: SW7015 Repose Gray",
-            createdBy: sarah
+            notes: "Pequeños roces cerca de la puerta principal. Código de pintura: SW7015 Gris Reposo",
+            createdBy: sofia
             // NEW - not acknowledged
         )
 
         let task2_4 = DONEOTask(
-            title: "Replace smoke detector batteries",
-            assignees: [alex, sarah],
+            title: "Cambiar pilas de detectores de humo",
+            assignees: [alejandro, sofia],
             status: .pending,
             subtasks: [
-                Subtask(title: "Check upstairs detectors", isDone: false, assignees: [alex], createdBy: sarah),
-                Subtask(title: "Check downstairs detectors", isDone: false, assignees: [sarah], createdBy: sarah),
-                Subtask(title: "Test all alarms", isDone: false, createdBy: sarah)
+                Subtask(title: "Revisar detectores del piso superior", isDone: false, assignees: [alejandro], createdBy: sofia),
+                Subtask(title: "Revisar detectores del piso inferior", isDone: false, assignees: [sofia], createdBy: sofia),
+                Subtask(title: "Probar todas las alarmas", isDone: false, createdBy: sofia)
             ],
-            createdBy: sarah,
-            acknowledgedBy: [alex.id, sarah.id]
+            createdBy: sofia,
+            acknowledgedBy: [alejandro.id, sofia.id]
         )
 
         let task3_1 = DONEOTask(
-            title: "Review blueprints",
-            assignees: [mike],
+            title: "Revisar planos",
+            assignees: [miguel],
             status: .pending,
             dueDate: today,
             subtasks: [
-                Subtask(title: "Review structural plans", isDone: true, assignees: [mike], createdBy: alex),
-                Subtask(title: "Check electrical layout", isDone: false, assignees: [alex, mike], createdBy: alex),
-                Subtask(title: "Verify plumbing routes", isDone: false, assignees: [maria], createdBy: alex)
+                Subtask(title: "Revisar planos estructurales", isDone: true, assignees: [miguel], createdBy: alejandro),
+                Subtask(title: "Verificar distribución eléctrica", isDone: false, assignees: [alejandro, miguel], createdBy: alejandro),
+                Subtask(title: "Verificar rutas de fontanería", isDone: false, assignees: [maria], createdBy: alejandro)
             ],
-            createdBy: alex
+            createdBy: alejandro
         )
         let task3_2 = DONEOTask(
-            title: "Order HVAC units",
-            assignees: [maria, alex],
+            title: "Pedir unidades de climatización",
+            assignees: [maria, alejandro],
             status: .pending,
             dueDate: nextWeek,
             notes: """
-            Supplier: Climate Control Systems
-            Contact: Tom Richards
-            Phone: (555) 567-8901
-            Email: tom@climatecontrol.com
+            Proveedor: Sistemas de Climatización
+            Contacto: Tomás Ruiz
+            Teléfono: (91) 567-8901
+            Email: tomas@climatizacion.com
 
-            Quote #: CCS-2024-1847
-            2x Carrier 5-ton units
-            Total: $12,450 (includes installation)
+            Presupuesto #: CCS-2024-1847
+            2x Unidades Carrier 5 toneladas
+            Total: 12.450€ (incluye instalación)
 
-            Requires 50% deposit to order
+            Requiere 50% de depósito para pedir
             """,
-            createdBy: mike,
-            acknowledgedBy: [maria.id] // Maria accepted, but Alex hasn't yet - NEW for Alex
+            createdBy: miguel,
+            acknowledgedBy: [maria.id] // María accepted, but Alejandro hasn't yet - NEW for Alejandro
         )
         let task3_3 = DONEOTask(
-            title: "Coordinate with city inspector",
-            assignees: [alex],
+            title: "Coordinar con inspector municipal",
+            assignees: [alejandro],
             status: .pending,
             notes: """
-            Building Department: (555) 678-9012
-            Permit #: BLD-2024-0293
+            Departamento de Urbanismo: (91) 678-9012
+            Permiso #: BLD-2024-0293
 
-            Inspections needed:
-            1. Foundation (PASSED)
-            2. Framing (PASSED)
-            3. Electrical rough-in (SCHEDULED)
-            4. Plumbing rough-in (PENDING)
-            5. Final inspection
+            Inspecciones necesarias:
+            1. Cimentación (APROBADA)
+            2. Estructura (APROBADA)
+            3. Preinstalación eléctrica (PROGRAMADA)
+            4. Preinstalación de fontanería (PENDIENTE)
+            5. Inspección final
 
-            Inspector assigned: Carlos Mendez
+            Inspector asignado: Carlos Méndez
             """,
-            createdBy: maria // Maria assigned this to Alex - NEW task needing acknowledgment
+            createdBy: maria // María assigned this to Alejandro - NEW task needing acknowledgment
         )
-        let task3_4 = DONEOTask(title: "Complete foundation work", assignees: [mike], status: .done, createdBy: alex)
-        let task3_5 = DONEOTask(title: "Install plumbing rough-in", assignees: [alex], status: .pending, dueDate: tomorrow, createdBy: mike)
+        let task3_4 = DONEOTask(title: "Completar trabajos de cimentación", assignees: [miguel], status: .done, createdBy: alejandro)
+        let task3_5 = DONEOTask(title: "Instalar preinstalación de fontanería", assignees: [alejandro], status: .pending, dueDate: tomorrow, createdBy: miguel)
 
         // More tasks for Office Building
         let task3_6 = DONEOTask(
-            title: "Schedule concrete pour",
-            assignees: [alex],
+            title: "Programar vertido de hormigón",
+            assignees: [alejandro],
             status: .pending,
             dueDate: nextWeek,
-            notes: "Need 15 cubic yards. Coordinate with pump truck.",
-            createdBy: mike,
-            acknowledgedBy: [alex.id]
+            notes: "Se necesitan 12 metros cúbicos. Coordinar con camión bomba.",
+            createdBy: miguel,
+            acknowledgedBy: [alejandro.id]
         )
 
         let task3_7 = DONEOTask(
-            title: "Order electrical panels",
-            assignees: [alex, maria],
+            title: "Pedir cuadros eléctricos",
+            assignees: [alejandro, maria],
             status: .pending,
             dueDate: today,
             subtasks: [
-                Subtask(title: "Get quote from ElectroPro", isDone: true, assignees: [maria], createdBy: mike),
-                Subtask(title: "Confirm panel specs with engineer", isDone: false, assignees: [alex], createdBy: mike),
-                Subtask(title: "Place order", isDone: false, createdBy: mike)
+                Subtask(title: "Obtener presupuesto de ElectroPro", isDone: true, assignees: [maria], createdBy: miguel),
+                Subtask(title: "Confirmar especificaciones con ingeniero", isDone: false, assignees: [alejandro], createdBy: miguel),
+                Subtask(title: "Realizar pedido", isDone: false, createdBy: miguel)
             ],
-            createdBy: mike
-            // NEW - Alex hasn't acknowledged
+            createdBy: miguel
+            // NEW - Alejandro hasn't acknowledged
         )
 
         let task3_8 = DONEOTask(
-            title: "Update project timeline",
-            assignees: [alex],
+            title: "Actualizar cronograma del proyecto",
+            assignees: [alejandro],
             status: .pending,
-            notes: "Client wants revised schedule by EOD Friday",
+            notes: "El cliente quiere el calendario revisado antes del viernes",
             createdBy: maria
             // NEW - not acknowledged
         )
 
-        let task4_1 = DONEOTask(title: "Service excavator", assignees: [james], status: .done, createdBy: alex)
-        let task4_2 = DONEOTask(title: "Replace drill bits", assignees: [mike], status: .done, createdBy: alex)
+        let task4_1 = DONEOTask(title: "Revisar excavadora", assignees: [carlos], status: .done, createdBy: alejandro)
+        let task4_2 = DONEOTask(title: "Cambiar brocas de taladro", assignees: [miguel], status: .done, createdBy: alejandro)
 
         // New tasks for Equipment Maintenance
         let task4_3 = DONEOTask(
-            title: "Inspect safety harnesses",
-            assignees: [alex],
+            title: "Inspeccionar arneses de seguridad",
+            assignees: [alejandro],
             status: .pending,
             dueDate: tomorrow,
-            notes: "Annual inspection due. Check all 8 harnesses.",
-            createdBy: james,
-            acknowledgedBy: [alex.id]
+            notes: "Inspección anual vencida. Revisar los 8 arneses.",
+            createdBy: carlos,
+            acknowledgedBy: [alejandro.id]
         )
 
         let task4_4 = DONEOTask(
-            title: "Order replacement blades",
-            assignees: [alex, mike],
+            title: "Pedir cuchillas de repuesto",
+            assignees: [alejandro, miguel],
             status: .pending,
             subtasks: [
-                Subtask(title: "Check inventory", isDone: true, assignees: [mike], createdBy: james),
-                Subtask(title: "Get quotes", isDone: false, assignees: [alex], createdBy: james),
-                Subtask(title: "Submit purchase order", isDone: false, createdBy: james)
+                Subtask(title: "Revisar inventario", isDone: true, assignees: [miguel], createdBy: carlos),
+                Subtask(title: "Obtener presupuestos", isDone: false, assignees: [alejandro], createdBy: carlos),
+                Subtask(title: "Enviar orden de compra", isDone: false, createdBy: carlos)
             ],
-            createdBy: james
-            // NEW - Alex hasn't acknowledged
+            createdBy: carlos
+            // NEW - Alejandro hasn't acknowledged
         )
 
-        let task5_1 = DONEOTask(title: "Send invoice", assignees: [alex], status: .pending, dueDate: yesterday, createdBy: sarah, acknowledgedBy: [alex.id])
-        let task5_2 = DONEOTask(title: "Schedule follow-up meeting", assignees: [sarah], status: .pending, dueDate: tomorrow, createdBy: alex)
+        let task5_1 = DONEOTask(title: "Enviar factura", assignees: [alejandro], status: .pending, dueDate: yesterday, createdBy: sofia, acknowledgedBy: [alejandro.id])
+        let task5_2 = DONEOTask(title: "Programar reunión de seguimiento", assignees: [sofia], status: .pending, dueDate: tomorrow, createdBy: alejandro)
 
         // More tasks for ABC Corp
         let task5_3 = DONEOTask(
-            title: "Prepare project closeout docs",
-            assignees: [alex],
+            title: "Preparar documentos de cierre del proyecto",
+            assignees: [alejandro],
             status: .pending,
             dueDate: nextWeek,
             subtasks: [
-                Subtask(title: "Compile warranties", isDone: false, assignees: [alex], createdBy: sarah),
-                Subtask(title: "Gather as-built drawings", isDone: false, createdBy: sarah),
-                Subtask(title: "Write project summary", isDone: false, assignees: [sarah], createdBy: sarah)
+                Subtask(title: "Recopilar garantías", isDone: false, assignees: [alejandro], createdBy: sofia),
+                Subtask(title: "Reunir planos finales", isDone: false, createdBy: sofia),
+                Subtask(title: "Escribir resumen del proyecto", isDone: false, assignees: [sofia], createdBy: sofia)
             ],
-            createdBy: sarah,
-            acknowledgedBy: [alex.id]
+            createdBy: sofia,
+            acknowledgedBy: [alejandro.id]
         )
 
         let task5_4 = DONEOTask(
-            title: "Review final punch list",
-            assignees: [alex],
+            title: "Revisar lista de repasos final",
+            assignees: [alejandro],
             status: .pending,
             dueDate: today,
-            notes: "12 items remaining. Client walkthrough at 2pm.",
-            createdBy: sarah
+            notes: "Quedan 12 puntos pendientes. Visita del cliente a las 14:00.",
+            createdBy: sofia
             // NEW - not acknowledged
         )
 
@@ -638,7 +638,7 @@ final class MockDataService {
         let project1Attachments: [ProjectAttachment] = [
             ProjectAttachment(
                 type: .document,
-                fileName: "Kitchen_Materials_Quote.pdf",
+                fileName: "Presupuesto_Materiales_Cocina.pdf",
                 fileSize: 245_000,
                 uploadedBy: maria,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -3, to: today) ?? today,
@@ -646,7 +646,7 @@ final class MockDataService {
             ),
             ProjectAttachment(
                 type: .document,
-                fileName: "Supplier_Comparison.xlsx",
+                fileName: "Comparativa_Proveedores.xlsx",
                 fileSize: 128_000,
                 uploadedBy: maria,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -2, to: today) ?? today,
@@ -654,33 +654,33 @@ final class MockDataService {
             ),
             ProjectAttachment(
                 type: .image,
-                fileName: "Kitchen_Measurements.jpg",
+                fileName: "Medidas_Cocina.jpg",
                 fileSize: 3_200_000,
-                uploadedBy: james,
+                uploadedBy: carlos,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -1, to: today) ?? today,
                 linkedTaskId: task1_1.id
             ),
             ProjectAttachment(
                 type: .document,
-                fileName: "Electrical_Permit.pdf",
+                fileName: "Permiso_Electrico.pdf",
                 fileSize: 89_000,
-                uploadedBy: alex,
+                uploadedBy: alejandro,
                 uploadedAt: Calendar.current.date(byAdding: .hour, value: -5, to: today) ?? today,
                 linkedTaskId: task1_2.id
             ),
             ProjectAttachment(
                 type: .image,
-                fileName: "Bathroom_Tiling_Complete.jpg",
+                fileName: "Azulejos_Baño_Completado.jpg",
                 fileSize: 2_800_000,
-                uploadedBy: james,
+                uploadedBy: carlos,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -4, to: today) ?? today,
                 linkedTaskId: task1_3.id
             ),
             ProjectAttachment(
                 type: .document,
-                fileName: "Window_Specs.pdf",
+                fileName: "Especificaciones_Ventanas.pdf",
                 fileSize: 156_000,
-                uploadedBy: alex,
+                uploadedBy: alejandro,
                 uploadedAt: Calendar.current.date(byAdding: .hour, value: -2, to: today) ?? today,
                 linkedTaskId: task1_5.id
             )
@@ -689,25 +689,25 @@ final class MockDataService {
         let project2Attachments: [ProjectAttachment] = [
             ProjectAttachment(
                 type: .document,
-                fileName: "Walkthrough_Checklist.pdf",
+                fileName: "Lista_Verificacion_Inspeccion.pdf",
                 fileSize: 67_000,
-                uploadedBy: sarah,
+                uploadedBy: sofia,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -1, to: today) ?? today,
                 linkedTaskId: task2_1.id
             ),
             ProjectAttachment(
                 type: .image,
-                fileName: "Plumbing_Issue.jpg",
+                fileName: "Problema_Fontaneria.jpg",
                 fileSize: 1_950_000,
-                uploadedBy: alex,
+                uploadedBy: alejandro,
                 uploadedAt: Calendar.current.date(byAdding: .hour, value: -3, to: today) ?? today,
                 linkedTaskId: task2_1.id
             ),
             ProjectAttachment(
                 type: .image,
-                fileName: "Garage_Door_Fixed.jpg",
+                fileName: "Puerta_Garaje_Reparada.jpg",
                 fileSize: 2_100_000,
-                uploadedBy: sarah,
+                uploadedBy: sofia,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -2, to: today) ?? today,
                 linkedTaskId: task2_2.id
             )
@@ -716,15 +716,15 @@ final class MockDataService {
         let project3Attachments: [ProjectAttachment] = [
             ProjectAttachment(
                 type: .document,
-                fileName: "Phase2_Blueprints_v3.pdf",
+                fileName: "Planos_Fase2_v3.pdf",
                 fileSize: 4_500_000,
-                uploadedBy: mike,
+                uploadedBy: miguel,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -5, to: today) ?? today,
                 linkedTaskId: task3_1.id
             ),
             ProjectAttachment(
                 type: .document,
-                fileName: "HVAC_Quote_ClimateControl.pdf",
+                fileName: "Presupuesto_Climatizacion.pdf",
                 fileSize: 312_000,
                 uploadedBy: maria,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -2, to: today) ?? today,
@@ -732,25 +732,25 @@ final class MockDataService {
             ),
             ProjectAttachment(
                 type: .document,
-                fileName: "City_Permit_BLD-2024-0293.pdf",
+                fileName: "Permiso_Municipal_BLD-2024-0293.pdf",
                 fileSize: 178_000,
-                uploadedBy: alex,
+                uploadedBy: alejandro,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -7, to: today) ?? today,
                 linkedTaskId: task3_3.id
             ),
             ProjectAttachment(
                 type: .image,
-                fileName: "Foundation_Inspection_Pass.jpg",
+                fileName: "Inspeccion_Cimentacion_Aprobada.jpg",
                 fileSize: 2_400_000,
-                uploadedBy: mike,
+                uploadedBy: miguel,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -10, to: today) ?? today,
                 linkedTaskId: task3_4.id
             ),
             ProjectAttachment(
                 type: .document,
-                fileName: "Plumbing_Layout.pdf",
+                fileName: "Distribucion_Fontaneria.pdf",
                 fileSize: 890_000,
-                uploadedBy: alex,
+                uploadedBy: alejandro,
                 uploadedAt: Calendar.current.date(byAdding: .hour, value: -6, to: today) ?? today,
                 linkedTaskId: task3_5.id
             )
@@ -759,81 +759,81 @@ final class MockDataService {
         let project5Attachments: [ProjectAttachment] = [
             ProjectAttachment(
                 type: .document,
-                fileName: "Invoice_ABC-2024-0158.pdf",
+                fileName: "Factura_ABC-2024-0158.pdf",
                 fileSize: 145_000,
-                uploadedBy: alex,
+                uploadedBy: alejandro,
                 uploadedAt: Calendar.current.date(byAdding: .day, value: -1, to: today) ?? today,
                 linkedTaskId: task5_1.id
             ),
             ProjectAttachment(
                 type: .document,
-                fileName: "Project_Summary.docx",
+                fileName: "Resumen_Proyecto.docx",
                 fileSize: 234_000,
-                uploadedBy: sarah,
+                uploadedBy: sofia,
                 uploadedAt: Calendar.current.date(byAdding: .hour, value: -8, to: today) ?? today
             )
         ]
 
         return [
             Project(
-                name: "Downtown Renovation",
-                members: [alex, maria, james],
+                name: "Renovación Centro",
+                members: [alejandro, maria, carlos],
                 tasks: [task1_1, task1_2, task1_3, task1_4_paint, task1_5, task1_6, task1_7],
                 messages: project1Messages,
                 attachments: project1Attachments,
                 unreadTaskIds: [
-                    alex.id: [task1_1.id, task1_3.id],
+                    alejandro.id: [task1_1.id, task1_3.id],
                     maria.id: [task1_2.id],
-                    james.id: [task1_1.id, task1_2.id]
+                    carlos.id: [task1_1.id, task1_2.id]
                 ],
                 lastActivity: Date(),
-                lastActivityPreview: "Maria: Can you check the measurements?"
+                lastActivityPreview: "María: ¿Puedes revisar las medidas?"
             ),
             Project(
-                name: "Smith Residence",
-                members: [alex, sarah],
+                name: "Residencia Sánchez",
+                members: [alejandro, sofia],
                 tasks: [task2_1, task2_2, task2_3, task2_4],
                 messages: project2Messages,
                 attachments: project2Attachments,
                 unreadTaskIds: [:],
                 lastActivity: Calendar.current.date(byAdding: .hour, value: -2, to: Date()),
-                lastActivityPreview: "Completed: Fix garage door"
+                lastActivityPreview: "Completado: Reparar puerta del garaje"
             ),
             Project(
-                name: "Office Building - Phase 2",
-                members: [alex, maria, mike],
+                name: "Edificio de Oficinas - Fase 2",
+                members: [alejandro, maria, miguel],
                 tasks: [task3_1, task3_2, task3_3, task3_4, task3_5, task3_6, task3_7, task3_8],
                 messages: project3Messages,
                 attachments: project3Attachments,
                 unreadTaskIds: [
-                    alex.id: [task3_1.id, task3_2.id, task3_4.id, task3_5.id],
+                    alejandro.id: [task3_1.id, task3_2.id, task3_4.id, task3_5.id],
                     maria.id: [task3_1.id, task3_3.id, task3_4.id],
-                    mike.id: [task3_2.id, task3_3.id, task3_5.id]
+                    miguel.id: [task3_2.id, task3_3.id, task3_5.id]
                 ],
                 lastActivity: Calendar.current.date(byAdding: .minute, value: -30, to: Date()),
-                lastActivityPreview: "New task: Install plumbing rough-in"
+                lastActivityPreview: "Nueva tarea: Instalar preinstalación de fontanería"
             ),
             Project(
-                name: "Equipment Maintenance",
-                members: [alex, james, mike],
+                name: "Mantenimiento de Equipos",
+                members: [alejandro, carlos, miguel],
                 tasks: [task4_1, task4_2, task4_3, task4_4],
                 messages: [],
                 attachments: [],
                 unreadTaskIds: [:],
                 lastActivity: Calendar.current.date(byAdding: .day, value: -1, to: Date()),
-                lastActivityPreview: "Completed: Replace drill bits"
+                lastActivityPreview: "Completado: Cambiar brocas de taladro"
             ),
             Project(
-                name: "Client: ABC Corp",
-                members: [alex, sarah],
+                name: "Cliente: Corporación ABC",
+                members: [alejandro, sofia],
                 tasks: [task5_1, task5_2, task5_3, task5_4],
                 messages: [],
                 attachments: project5Attachments,
                 unreadTaskIds: [
-                    alex.id: [task5_2.id]
+                    alejandro.id: [task5_2.id]
                 ],
                 lastActivity: Calendar.current.date(byAdding: .hour, value: -5, to: Date()),
-                lastActivityPreview: "Sarah: Invoice is ready for review"
+                lastActivityPreview: "Sofía: La factura está lista para revisión"
             )
         ]
     }

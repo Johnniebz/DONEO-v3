@@ -77,18 +77,18 @@ struct ProjectCardView: View {
 
         if let days = components.day, days > 0 {
             if days == 1 {
-                return "Yesterday"
+                return "Ayer"
             } else if days < 7 {
-                return "\(days) days ago"
+                return "hace \(days) dias"
             } else {
                 return date.formatted(.dateTime.month(.abbreviated).day())
             }
         } else if let hours = components.hour, hours > 0 {
-            return "\(hours)h ago"
+            return "hace \(hours)h"
         } else if let minutes = components.minute, minutes > 0 {
-            return "\(minutes)m ago"
+            return "hace \(minutes)m"
         } else {
-            return "Just now"
+            return "Ahora"
         }
     }
 }

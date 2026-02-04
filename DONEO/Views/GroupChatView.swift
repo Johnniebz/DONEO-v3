@@ -30,10 +30,10 @@ struct GroupChatView: View {
             Image(systemName: "bubble.left.and.bubble.right")
                 .font(.system(size: 48))
                 .foregroundStyle(.tertiary)
-            Text("No messages yet")
+            Text("No hay mensajes aun")
                 .font(.headline)
                 .foregroundStyle(.secondary)
-            Text("Start the conversation")
+            Text("Inicia la conversacion")
                 .font(.subheadline)
                 .foregroundStyle(.tertiary)
             Spacer()
@@ -69,7 +69,7 @@ struct GroupChatView: View {
 
     private var inputField: some View {
         HStack(spacing: 12) {
-            TextField("Message...", text: $viewModel.newMessageText, axis: .vertical)
+            TextField("Mensaje...", text: $viewModel.newMessageText, axis: .vertical)
                 .textFieldStyle(.plain)
                 .lineLimit(1...4)
                 .focused($isInputFocused)
@@ -142,7 +142,7 @@ struct GroupMessageBubble: View {
         if calendar.isDateInToday(date) {
             return date.formatted(date: .omitted, time: .shortened)
         } else if calendar.isDateInYesterday(date) {
-            return "Yesterday " + date.formatted(date: .omitted, time: .shortened)
+            return "Ayer " + date.formatted(date: .omitted, time: .shortened)
         } else {
             return date.formatted(date: .abbreviated, time: .shortened)
         }

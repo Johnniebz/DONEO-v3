@@ -18,10 +18,10 @@ struct VerificationCodeView: View {
                     .font(.system(size: 48))
                     .foregroundStyle(Theme.primary)
 
-                Text("Verify your number")
+                Text("Verifica tu número")
                     .font(.system(size: 24, weight: .bold))
 
-                Text("We sent a code to \(phoneNumber)")
+                Text("Enviamos un código a \(phoneNumber)")
                     .font(.system(size: 15))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -31,7 +31,7 @@ struct VerificationCodeView: View {
 
             // Code input
             VStack(alignment: .leading, spacing: 8) {
-                Text("Enter verification code")
+                Text("Ingresa el código de verificación")
                     .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(.secondary)
 
@@ -56,7 +56,7 @@ struct VerificationCodeView: View {
                     }
 
                 // Hint for demo
-                Text("For demo, use code: 123456")
+                Text("Para demo, usa el código: 123456")
                     .font(.system(size: 13))
                     .foregroundStyle(.tertiary)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -64,7 +64,7 @@ struct VerificationCodeView: View {
 
             // Verify button
             Button(action: onVerify) {
-                Text("Verify")
+                Text("Verificar")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -76,7 +76,7 @@ struct VerificationCodeView: View {
 
             // Resend option
             Button(action: onResend) {
-                Text("Didn't receive a code? Resend")
+                Text("¿No recibiste el código? Reenviar")
                     .font(.system(size: 15))
                     .foregroundStyle(Theme.primary)
             }

@@ -20,7 +20,7 @@ struct TaskDrawerSheet: View {
                 // Add task button at bottom
                 addTaskButton
             }
-            .navigationTitle("Tasks")
+            .navigationTitle("Tareas")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -52,11 +52,11 @@ struct TaskDrawerSheet: View {
                 .font(.system(size: 48))
                 .foregroundStyle(.tertiary)
 
-            Text("No tasks yet")
+            Text("Sin tareas aún")
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.secondary)
 
-            Text("Create your first task to get started")
+            Text("Crea tu primera tarea para comenzar")
                 .font(.system(size: 14))
                 .foregroundStyle(.tertiary)
 
@@ -83,7 +83,7 @@ struct TaskDrawerSheet: View {
                         )
                     }
                 } header: {
-                    Text("Pending (\(viewModel.pendingTasks.count))")
+                    Text("Pendiente (\(viewModel.pendingTasks.count))")
                 }
             }
 
@@ -101,7 +101,7 @@ struct TaskDrawerSheet: View {
                         )
                     }
                 } header: {
-                    Text("Completed (\(viewModel.completedTasks.count))")
+                    Text("Completado (\(viewModel.completedTasks.count))")
                 }
             }
         }
@@ -116,7 +116,7 @@ struct TaskDrawerSheet: View {
         } label: {
             HStack {
                 Image(systemName: "plus.circle.fill")
-                Text("Add Task")
+                Text("Añadir Tarea")
                     .fontWeight(.semibold)
             }
             .frame(maxWidth: .infinity)
@@ -248,13 +248,13 @@ struct TaskDrawerRow: View {
             Button(role: .destructive) {
                 viewModel.deleteTask(task)
             } label: {
-                Label("Delete", systemImage: "trash")
+                Label("Eliminar", systemImage: "trash")
             }
 
             Button {
                 onQuote()
             } label: {
-                Label("Quote", systemImage: "quote.bubble")
+                Label("Citar", systemImage: "quote.bubble")
             }
             .tint(Theme.primary)
         }
@@ -266,11 +266,11 @@ struct TaskDrawerRow: View {
     private func formatDueDate(_ date: Date) -> String {
         let calendar = Calendar.current
         if calendar.isDateInToday(date) {
-            return "Today"
+            return "Hoy"
         } else if calendar.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Mañana"
         } else if calendar.isDateInYesterday(date) {
-            return "Yesterday"
+            return "Ayer"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }
@@ -326,11 +326,11 @@ struct AddTaskSheet: View {
                 VStack(alignment: .leading, spacing: 24) {
                     // Task title
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Task")
+                        Text("Tarea")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
-                        TextField("What needs to be done?", text: $taskTitle)
+                        TextField("¿Qué hay que hacer?", text: $taskTitle)
                             .font(.system(size: 17))
                             .padding(14)
                             .background(Color(uiColor: .secondarySystemBackground))
@@ -340,7 +340,7 @@ struct AddTaskSheet: View {
 
                     // Assignees as chips
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Assign to")
+                        Text("Asignar a")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -363,7 +363,7 @@ struct AddTaskSheet: View {
                                                     .font(.system(size: 10, weight: .medium))
                                                     .foregroundStyle(isSelected ? .white : Theme.primary)
                                             }
-                                        Text(member.id == viewModel.currentUser.id ? "Me" : member.displayFirstName)
+                                        Text(member.id == viewModel.currentUser.id ? "Yo" : member.displayFirstName)
                                             .font(.system(size: 14, weight: .medium))
                                     }
                                     .padding(.horizontal, 12)
@@ -400,7 +400,7 @@ struct AddTaskSheet: View {
                                             .foregroundStyle(.secondary)
                                     }
                                 } else {
-                                    Text("Set due date")
+                                    Text("Establecer fecha límite")
                                         .font(.system(size: 14))
                                         .foregroundStyle(.secondary)
                                 }
@@ -414,7 +414,7 @@ struct AddTaskSheet: View {
 
                         if showingDatePicker {
                             DatePicker(
-                                "Due date",
+                                "Fecha límite",
                                 selection: Binding(
                                     get: { dueDate ?? Date() },
                                     set: { dueDate = $0 }
@@ -429,7 +429,7 @@ struct AddTaskSheet: View {
                     // Notes & Attachments
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Notes")
+                            Text("Notas")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
 
@@ -442,21 +442,21 @@ struct AddTaskSheet: View {
                                     maxSelectionCount: 10,
                                     matching: .images
                                 ) {
-                                    Label("Photos", systemImage: "photo")
+                                    Label("Fotos", systemImage: "photo")
                                 }
 
                                 Button {
                                     let fileName = "Document_\(attachments.count + 1).pdf"
                                     attachments.append(NewAttachment(type: .document, fileName: fileName, data: nil))
                                 } label: {
-                                    Label("Files", systemImage: "doc")
+                                    Label("Archivos", systemImage: "doc")
                                 }
 
                                 Button {
                                     let contactName = "Contact_\(attachments.count + 1).vcf"
                                     attachments.append(NewAttachment(type: .contact, fileName: contactName, data: nil))
                                 } label: {
-                                    Label("Contacts", systemImage: "person.crop.circle")
+                                    Label("Contactos", systemImage: "person.crop.circle")
                                 }
                             } label: {
                                 HStack(spacing: 4) {
@@ -471,7 +471,7 @@ struct AddTaskSheet: View {
                             }
                         }
 
-                        TextField("Add details, instructions, or context...", text: $notes, axis: .vertical)
+                        TextField("Añade detalles, instrucciones o contexto...", text: $notes, axis: .vertical)
                             .font(.system(size: 15))
                             .lineLimit(4...8)
                             .padding(14)
@@ -498,7 +498,7 @@ struct AddTaskSheet: View {
 
                     // Subtasks
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Subtasks")
+                        Text("Subtareas")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
@@ -588,7 +588,7 @@ struct AddTaskSheet: View {
                                     .font(.system(size: 18))
                                     .foregroundStyle(Theme.primary)
 
-                                Text("Add subtask")
+                                Text("Añadir subtarea")
                                     .font(.system(size: 15))
                                     .foregroundStyle(.secondary)
 
@@ -603,16 +603,16 @@ struct AddTaskSheet: View {
                 }
                 .padding()
             }
-            .navigationTitle("New Task")
+            .navigationTitle("Nueva Tarea")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Create") {
+                    Button("Crear") {
                         createTask()
                     }
                     .fontWeight(.semibold)
@@ -684,9 +684,9 @@ struct AddTaskSheet: View {
     private func formatDueDate(_ date: Date) -> String {
         let calendar = Calendar.current
         if calendar.isDateInToday(date) {
-            return "Today"
+            return "Hoy"
         } else if calendar.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Mañana"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }
@@ -877,11 +877,11 @@ struct AddSubtaskToNewTaskSheet: View {
                 VStack(alignment: .leading, spacing: 24) {
                     // Subtask title
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Subtask")
+                        Text("Subtarea")
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.secondary)
 
-                        TextField("What needs to be done?", text: $title)
+                        TextField("¿Qué hay que hacer?", text: $title)
                             .font(.system(size: 17))
                             .padding(14)
                             .background(Color(uiColor: .secondarySystemBackground))
@@ -892,12 +892,12 @@ struct AddSubtaskToNewTaskSheet: View {
                     // Assignees
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
-                            Text("Assign to")
+                            Text("Asignar a")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
 
                             if !taskAssigneeIds.isEmpty {
-                                Text("(from task assignees)")
+                                Text("(de los asignados a la tarea)")
                                     .font(.system(size: 11))
                                     .foregroundStyle(.tertiary)
                             }
@@ -922,7 +922,7 @@ struct AddSubtaskToNewTaskSheet: View {
                                                     .font(.system(size: 10, weight: .medium))
                                                     .foregroundStyle(isSelected ? .white : Theme.primary)
                                             }
-                                        Text(member.id == viewModel.currentUser.id ? "Me" : member.displayFirstName)
+                                        Text(member.id == viewModel.currentUser.id ? "Yo" : member.displayFirstName)
                                             .font(.system(size: 14, weight: .medium))
                                     }
                                     .padding(.horizontal, 12)
@@ -959,7 +959,7 @@ struct AddSubtaskToNewTaskSheet: View {
                                             .foregroundStyle(.secondary)
                                     }
                                 } else {
-                                    Text("Set due date")
+                                    Text("Establecer fecha límite")
                                         .font(.system(size: 14))
                                         .foregroundStyle(.secondary)
                                 }
@@ -973,7 +973,7 @@ struct AddSubtaskToNewTaskSheet: View {
 
                         if showingDatePicker {
                             DatePicker(
-                                "Due date",
+                                "Fecha límite",
                                 selection: Binding(
                                     get: { dueDate ?? Date() },
                                     set: { dueDate = $0 }
@@ -988,7 +988,7 @@ struct AddSubtaskToNewTaskSheet: View {
                     // Notes/Description with attachment icon
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Notes")
+                            Text("Notas")
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundStyle(.secondary)
 
@@ -1001,21 +1001,21 @@ struct AddSubtaskToNewTaskSheet: View {
                                     maxSelectionCount: 10,
                                     matching: .images
                                 ) {
-                                    Label("Photos", systemImage: "photo")
+                                    Label("Fotos", systemImage: "photo")
                                 }
 
                                 Button {
                                     let fileName = "Document_\(attachments.count + 1).pdf"
                                     attachments.append(AddTaskSheet.NewAttachment(type: .document, fileName: fileName, data: nil))
                                 } label: {
-                                    Label("Files", systemImage: "doc")
+                                    Label("Archivos", systemImage: "doc")
                                 }
 
                                 Button {
                                     let contactName = "Contact_\(attachments.count + 1).vcf"
                                     attachments.append(AddTaskSheet.NewAttachment(type: .contact, fileName: contactName, data: nil))
                                 } label: {
-                                    Label("Contacts", systemImage: "person.crop.circle")
+                                    Label("Contactos", systemImage: "person.crop.circle")
                                 }
                             } label: {
                                 HStack(spacing: 4) {
@@ -1030,7 +1030,7 @@ struct AddSubtaskToNewTaskSheet: View {
                             }
                         }
 
-                        TextField("Add details, instructions, or context...", text: $description, axis: .vertical)
+                        TextField("Añade detalles, instrucciones o contexto...", text: $description, axis: .vertical)
                             .font(.system(size: 15))
                             .lineLimit(4...8)
                             .padding(14)
@@ -1057,16 +1057,16 @@ struct AddSubtaskToNewTaskSheet: View {
                 }
                 .padding()
             }
-            .navigationTitle("New Subtask")
+            .navigationTitle("Nueva Subtarea")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button("Cancelar") {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Add") {
+                    Button("Añadir") {
                         let subtaskData = AddTaskSheet.NewSubtaskData(
                             title: title,
                             description: description.isEmpty ? nil : description,
@@ -1101,9 +1101,9 @@ struct AddSubtaskToNewTaskSheet: View {
     private func formatDueDate(_ date: Date) -> String {
         let calendar = Calendar.current
         if calendar.isDateInToday(date) {
-            return "Today"
+            return "Hoy"
         } else if calendar.isDateInTomorrow(date) {
-            return "Tomorrow"
+            return "Mañana"
         } else {
             return date.formatted(.dateTime.month(.abbreviated).day())
         }

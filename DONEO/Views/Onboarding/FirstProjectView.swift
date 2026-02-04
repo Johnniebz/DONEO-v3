@@ -17,10 +17,10 @@ struct FirstProjectView: View {
                     .font(.system(size: 48))
                     .foregroundStyle(Theme.primary)
 
-                Text("Create your first project")
+                Text("Crea tu primer proyecto")
                     .font(.system(size: 24, weight: .bold))
 
-                Text("Projects help you organize work by job site, client, or team")
+                Text("Los proyectos te ayudan a organizar el trabajo por sitio, cliente o equipo")
                     .font(.system(size: 15))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -30,11 +30,11 @@ struct FirstProjectView: View {
 
             // Project name input
             VStack(alignment: .leading, spacing: 8) {
-                Text("Project name")
+                Text("Nombre del proyecto")
                     .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(.secondary)
 
-                TextField("e.g. Kitchen Renovation", text: $projectName)
+                TextField("ej. Renovación de Cocina", text: $projectName)
                     .font(.system(size: 20))
                     .focused($isNameFocused)
                     .submitLabel(.next)
@@ -45,11 +45,11 @@ struct FirstProjectView: View {
 
             // Project description input
             VStack(alignment: .leading, spacing: 8) {
-                Text("Description (Optional)")
+                Text("Descripción (Opcional)")
                     .font(.system(size: 15, weight: .medium))
                     .foregroundStyle(.secondary)
 
-                TextField("What is this project about?", text: $projectDescription, axis: .vertical)
+                TextField("¿De qué trata este proyecto?", text: $projectDescription, axis: .vertical)
                     .font(.system(size: 17))
                     .lineLimit(2...4)
                     .submitLabel(.done)
@@ -65,7 +65,7 @@ struct FirstProjectView: View {
 
             // Create button
             Button(action: onCreateProject) {
-                Text("Create Project")
+                Text("Crear Proyecto")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
@@ -81,7 +81,7 @@ struct FirstProjectView: View {
 
             // Skip option
             Button(action: onSkip) {
-                Text("Skip for now")
+                Text("Omitir por ahora")
                     .font(.system(size: 15))
                     .foregroundStyle(.secondary)
             }
