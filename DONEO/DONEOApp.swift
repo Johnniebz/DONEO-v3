@@ -12,7 +12,7 @@ struct MainTabView: View {
             }
             .tabItem {
                 Image(systemName: "folder.fill")
-                Text("Projects")
+                Text("Proyectos")
             }
             .tag(0)
 
@@ -21,7 +21,7 @@ struct MainTabView: View {
             }
             .tabItem {
                 Image(systemName: "bell.fill")
-                Text("Activity")
+                Text("Actividad")
             }
             .tag(1)
 
@@ -30,7 +30,7 @@ struct MainTabView: View {
             }
             .tabItem {
                 Image(systemName: "phone.fill")
-                Text("Calls")
+                Text("Llamadas")
             }
             .tag(2)
 
@@ -39,7 +39,7 @@ struct MainTabView: View {
             }
             .tabItem {
                 Image(systemName: "gearshape.fill")
-                Text("Settings")
+                Text("Ajustes")
             }
             .tag(3)
         }
@@ -51,11 +51,11 @@ struct MainTabView: View {
 struct CallsPlaceholderView: View {
     var body: some View {
         ContentUnavailableView(
-            "Coming Soon",
+            "Próximamente",
             systemImage: "phone.fill",
-            description: Text("Voice and video calls will be available in a future update")
+            description: Text("Las llamadas de voz y video estarán disponibles en una actualización futura")
         )
-        .navigationTitle("Calls")
+        .navigationTitle("Llamadas")
     }
 }
 
@@ -84,7 +84,7 @@ struct DONEOApp: App {
                                 description: projectDescription,
                                 members: [currentUser],
                                 lastActivity: Date(),
-                                lastActivityPreview: "Project created"
+                                lastActivityPreview: "Proyecto creado"
                             )
                             MockDataService.shared.projects.insert(newProject, at: 0)
                         }
